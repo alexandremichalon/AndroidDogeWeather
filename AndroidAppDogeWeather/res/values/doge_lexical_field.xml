@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <!-- doge sentences that don't change -->
+    <string-array name="fix">
+        <item >wow</item>
+    </string-array>
+    
+    
+    <!-- doge sentences filled with String.format -->
+    <string-array name="changing">
+        <item >so %1$s</item>
+        <item >much %1$s</item>
+        <item >such %1$s</item>
+        <item >very %1$s</item>
+    </string-array>
+    
+    
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <!-- temp <= -30°C -->
+    <string-array name="inferior_to_minus_30">
+        <item >winter</item>
+        <item >freeze</item>
+        <item >polar vortex</item>
+        <item >ridiculous</item>
+        <item >hibernate</item>
+        <item >climate change</item>
+    </string-array>
+    
+    
+    <!-- -30°C < temp <= -15°C -->
+    <string-array name="between_minus_30_and_minus_15">
+        <item >cold</item>
+        <item >freeze</item>
+        <item >shiver</item>
+        <item >ice</item>
+        <item >yuck</item>
+        <item >climate change</item>
+    </string-array>
+    
+    
+    <!-- -15°C < temp <= -7°C -->
+    <string-array name="between_minus_15_and_minus_7">
+        <item >icy</item>
+        <item >winter</item>
+        <item >chill</item>
+        <item >crisp</item>
+        <item >brrrrr</item>
+        <item >cool</item>
+    </string-array>
+    
+    
+    <!-- -7°C < temp <= 0°C -->
+    <string-array name="between_minus_7_and_0">
+        <item >icy</item>
+        <item >frost</item>
+        <item >numb</item>
+        <item >shiver</item>
+        <item >brrrr</item>
+        <item >chilly</item>
+    </string-array>
+    
+    
+    <!-- 0°C < temp <= 10°C -->
+    <string-array name="between_0_and_10">
+        <item >concern</item>
+        <item >frosty</item>
+        <item >coat</item>
+        <item >uh oh</item>
+        <item >brrr</item>
+        <item >chilly</item>
+    </string-array>
+    
+    
+    <!-- 10°C < temp <= 20°C -->
+    <string-array name="between_10_and_20">
+        <item >moderate</item>
+        <item >mild</item>
+        <item >okay</item>
+        <item >medium</item>
+        <item >cool</item>
+        <item >whatever</item>
+    </string-array>
+    
+    
+    <!-- 20°C < temp <= 30°C -->
+    <string-array name="between_20_and_30">
+        <item >heat</item>
+        <item >warmth</item>
+        <item >climate</item>
+        <item >sweating</item>
+        <item >balmy</item>
+        <item >nice day</item>
+    </string-array>
+    
+    
+    <!-- 30°C < temp -->
+    <string-array name="superior_to_30">
+        <item >boiling</item>
+        <item >bake</item>
+        <item >melt</item>
+        <item >dying</item>
+        <item >suffer</item>
+        <item >global warming</item>
+    </string-array>
+    
+</resources>
