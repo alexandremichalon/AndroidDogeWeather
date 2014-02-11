@@ -119,4 +119,26 @@ public enum WeatherIcon {
 		return iconId;
 	}
 	
+	
+	
+	/**
+	 * Get the WeatherIcon associated with an icon ID.
+	 * 
+	 * @param iconId
+	 * 			The icon ID. 
+	 * @return
+	 * 			The WeatherIcon.
+	 */
+	public static WeatherIcon getWeatherIcon(String iconId)
+	{
+		for(WeatherIcon icon : WeatherIcon.values())
+		{
+			if(iconId.equals(icon.getIconId()))
+			{
+				return icon;
+			}
+		}
+		
+		throw new IllegalArgumentException(iconId + " is not a valid icon ID.");
+	}
 }
