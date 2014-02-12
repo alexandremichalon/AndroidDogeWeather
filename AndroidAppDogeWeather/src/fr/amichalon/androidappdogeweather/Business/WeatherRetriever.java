@@ -18,7 +18,7 @@ import fr.amichalon.androidappdogeweather.Model.Weather;
  * @author alexandre.michalon
  *
  */
-public class WeatherRetriever {
+class WeatherRetriever {
 	
 	private static String OWM_URL = "http://api.openweathermap.org/data/2.5/weather?lat=%d&lon=%d"; 
 	
@@ -26,7 +26,7 @@ public class WeatherRetriever {
 	
 	private static int PARIS_LONGITUDE = 2;
 
-	public static String getCurrentOWMDatas(int latitude, int longitude)
+	static String getCurrentOWMDatas(int latitude, int longitude)
 	{
 		HttpURLConnection connection 	= null;
 		InputStream response			= null;
@@ -75,7 +75,7 @@ public class WeatherRetriever {
 	
 	
 	
-	public static Weather getCurrentWeather(int latitude, int longitude)
+	static Weather getCurrentWeather(int latitude, int longitude)
 	{
 		String datas 		= getCurrentOWMDatas(latitude, longitude);
 		
@@ -118,7 +118,7 @@ public class WeatherRetriever {
 	
 	
 	
-	public static Weather getCurrentDefaultWeather() 
+	static Weather getCurrentDefaultWeather() 
 	{
 		return getCurrentWeather(PARIS_LATITUDE, PARIS_LONGITUDE);
 	}

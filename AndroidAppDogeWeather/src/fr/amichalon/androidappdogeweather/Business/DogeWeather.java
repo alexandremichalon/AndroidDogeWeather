@@ -38,11 +38,105 @@ public class DogeWeather {
 	
 	
 	
+	public int getLatitude()
+	{
+		if (weather != null)
+			return weather.getLatitude();
+		
+		else
+			return 0;
+	}
+	
+	
+	
+	public int getLongitude()
+	{
+		if (weather != null)
+			return weather.getLongitude();
+		
+		else
+			return 0;
+	}
+	
+	
+	
+	public String getDescription()
+	{
+		if(weather != null)
+			return weather.getDescription();
+		
+		else
+			return null;
+	}
+	
+	
+	
+	public String getCity()
+	{
+		if (weather != null)
+			return weather.getCity();
+		
+		else
+			return null;
+	}
+	
+	
+	
+	public int getTemperatureCelcius()
+	{
+		if (weather != null)
+			return weather.getTemperatureCelcius();
+		
+		else
+			return 0;
+	}
+	
+	
+	
+	public int getTemperatureFahrenheit()
+	{
+		if (weather != null)
+			return weather.getTemperatureFahrenheit();
+		
+		else
+			return 0;
+	}
+	
+	
+	
+	public int getBackImageId()
+	{
+		if(weatherIcon != null)
+			return weatherIcon.getBackImageId();
+		
+		else 
+			return 0;
+	}
+	
+	
+	
+	public int getFrontImageId()
+	{
+		if(weatherIcon != null)
+			return weatherIcon.getFrontImageId();
+		
+		else 
+			return 0;
+	}
+	
+	
+	
+	public String[] getLexicalField()
+	{
+		return lexicalField;
+	}
+	
+	
 	
 	
 	public void updateCurrentWeather()
 	{
-		if(weather == null)
+		if (weather == null)
 		{
 			weather = WeatherRetriever.getCurrentDefaultWeather();
 		}
@@ -54,7 +148,7 @@ public class DogeWeather {
 			weather = WeatherRetriever.getCurrentWeather(latitude, longitude);
 		}
 		
-		if(weather != null)
+		if (weather != null)
 			weatherIcon = WeatherIcon.getWeatherIcon(weather.getIconId());
 		
 		buildLexicalField();
@@ -66,7 +160,7 @@ public class DogeWeather {
 	{
 		weather = WeatherRetriever.getCurrentWeather(latitude, longitude);
 		
-		if(weather != null)
+		if (weather != null)
 			weatherIcon = WeatherIcon.getWeatherIcon(weather.getIconId());
 		
 		buildLexicalField();
