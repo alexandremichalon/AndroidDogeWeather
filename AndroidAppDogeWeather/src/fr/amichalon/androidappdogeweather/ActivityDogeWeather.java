@@ -3,8 +3,14 @@ package fr.amichalon.androidappdogeweather;
 import java.util.Random;
 
 import fr.amichalon.androidappdogeweather.Business.DogeWeather;
+import fr.amichalon.androidappdogeweather.Business.WeatherRetriever;
+import fr.amichalon.androidappdogeweather.Model.Weather;
+import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -19,8 +25,12 @@ public class ActivityDogeWeather extends Activity {
 	private static final String COMIC_SANS_FONT_FILE = "fonts/comicsans.ttf";
 	
 	private Typeface comicSans;
-
 	
+	private DogeWeather dogeWeather;
+
+	private int latitude;
+	
+	private int longitude;
 	
 	
     @Override
@@ -28,7 +38,16 @@ public class ActivityDogeWeather extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doge_weather);
         
-        InitView();
+        initView();
+        dogeWeather = new DogeWeather(this);
+        fillWeatherInfos(dogeWeather);
+        latitude = -1;
+        longitude = -1;
+        
+        
+        runWeatherHttpRequest = true;
+        DogeWeatherTask weatherHttpRequest = new DogeWeatherTask();
+        weatherHttpRequest.execute((Void) null);
     }
 
 
@@ -145,8 +164,41 @@ public class ActivityDogeWeather extends Activity {
     
     
     
+    private void resetPopups()
+    {
+    	if(txtvwPopups != null)
+    	{
+    		int length = txtvwPopups.length;
+    		for(int i = 0; i < length; i++)
+    		{
+    			TextView txtvw = txtvwPopups[i];
+    			
+    			if(txtvw != null)
+    				rlytDogeWeather.removeView(txtvw);
+    		}
+    	}
+    		
+    	txtvwPopups 			= new TextView[POPUPS_MAXIMUM_ROTATION];
+    	popupsRotationIndex 	= 0;
+    }
     
-    private void InitView()
+    
+    
+    
+    private boolean isNetworkAvailable() 
+    {
+    	Context ctx = getApplicationContext();
+    	ConnectivityManager connMgr = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	
+    	return connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected() || 
+    			connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected();
+	}
+
+    
+    
+    
+    
+    private void initView()
     {
     	resources = getResources();
     	comicSans = Typeface.createFromAsset(getAssets(), COMIC_SANS_FONT_FILE);
@@ -168,8 +220,7 @@ public class ActivityDogeWeather extends Activity {
     	txtvwTemperatureCelcius		.setTextColor(getRandomColorId());
     	txtvwTemperatureFahrenheit	.setTextColor(getRandomColorId());
     	
-    	txtvwPopups 			= new TextView[POPUPS_MAXIMUM_ROTATION];
-    	popupsRotationIndex 	= 0;
+    	resetPopups();
     }
     
     private Resources resources;
@@ -184,4 +235,63 @@ public class ActivityDogeWeather extends Activity {
     private TextView[] txtvwPopups;
     private int popupsRotationIndex;
     private static final int POPUPS_MAXIMUM_ROTATION = 4;
+    
+    
+    
+    private boolean runWeatherHttpRequest;
+    
+    private class DogeWeatherTask extends AsyncTask<Void, Weather, Void> {
+
+    	@Override
+    	protected Void doInBackground(Void... params) 
+    	{
+    		while(runWeatherHttpRequest)
+    		{
+	    		if(isNetworkAvailable())
+	    		{
+	    			Weather weather = (latitude < 0 || longitude < 0)
+	    					? WeatherRetriever.getCurrentDefaultWeather()
+							: WeatherRetriever.getCurrentWeather(latitude, longitude);
+	    					
+	    			publishProgress(weather);
+	    		}
+	    		else
+	    		{
+	    			publishProgress((Weather) null);
+	    		}
+	    		
+	    		try
+	    		{
+	    			// sleep one minute
+	    			Thread.sleep(1 * 60 * 1000);
+	    		}
+	    		catch(Exception exc) { }
+    		}
+    		
+    		return (Void) null;
+    	}
+    	
+    	
+    	@Override
+    	protected void onProgressUpdate(Weather... progress) {
+			
+    		if (progress != null
+				&& progress.length > 0)
+    		{
+    			Weather currentWeather = progress[0];
+    			
+    			if(currentWeather != null)
+    			{
+    				if(!currentWeather.getDescription().equals(dogeWeather.getDescription()))
+        			{
+    	    			initView();
+    	    			resetPopups();
+        			}
+        			
+        			dogeWeather.updateCurrentWeather(currentWeather);
+        			fillWeatherInfos(dogeWeather);
+    			}
+    		}
+		}
+    }
 }

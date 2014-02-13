@@ -15,7 +15,8 @@ import android.content.res.Resources;
 public class DogeWeather {
 	
 	private DogeWeather(
-			Activity activity
+			Activity activity,
+			Weather weather
 			)
 	{
 		this.activityDogeWeather = activity;
@@ -23,8 +24,15 @@ public class DogeWeather {
 		if (activityDogeWeather != null)
 			this.resources = activityDogeWeather.getResources();
 		
-		updateCurrentWeather();
+		updateCurrentWeather(weather);
 	}
+	
+	
+	public DogeWeather(Activity activity)
+	{
+		this(activity, null);
+	}
+	
 
 	private Weather weather;
 	
@@ -66,7 +74,7 @@ public class DogeWeather {
 			return weather.getDescription();
 		
 		else
-			return null;
+			return "wow doge weather";
 	}
 	
 	
@@ -77,7 +85,7 @@ public class DogeWeather {
 			return weather.getCity();
 		
 		else
-			return null;
+			return "wow city";
 	}
 	
 	
@@ -134,31 +142,9 @@ public class DogeWeather {
 	
 	
 	
-	public void updateCurrentWeather()
+	public void updateCurrentWeather(Weather weather)
 	{
-		if (weather == null)
-		{
-			weather = WeatherRetriever.getCurrentDefaultWeather();
-		}
-		else
-		{
-			int latitude = weather.getLatitude();
-			int longitude = weather.getLongitude();
-			
-			weather = WeatherRetriever.getCurrentWeather(latitude, longitude);
-		}
-		
-		if (weather != null)
-			weatherIcon = WeatherIcon.getWeatherIcon(weather.getIconId());
-		
-		buildLexicalField();
-	}
-	
-	
-	
-	public void updateCurrentWeather(int latitude, int longitude)
-	{
-		weather = WeatherRetriever.getCurrentWeather(latitude, longitude);
+		this.weather = weather;
 		
 		if (weather != null)
 			weatherIcon = WeatherIcon.getWeatherIcon(weather.getIconId());

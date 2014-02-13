@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="such_color_1">#0066FF</color>
+    <color name="such_color_2">#FF3399</color>
+    <color name="such_color_3">#33CC33</color>
+    <color name="such_color_4">#FFFF99</color>
+    <color name="such_color_5">#FFFF75</color>
+    <color name="such_color_6">#8533FF</color>
+    <color name="such_color_7">#33D6FF</color>
+    <color name="such_color_8">#FF5CFF</color>
+    <color name="such_color_9">#19D1A3</color>
+    <color name="such_color_10">#FF4719</color>
+    <color name="such_color_11">#197519</color>
+    <color name="such_color_12">#6699FF</color>
+    <color name="such_color_13">#4747D1</color>
+    <color name="such_color_14">#D1D1E0</color>
+    <color name="such_color_15">#FF5050</color>
+    <color name="such_color_16">#FFFFF0</color>
+    <color name="such_color_17">#CC99FF</color>
+    <color name="such_color_18">#66E0C2</color>
+    <color name="such_color_19">#FF4DFF</color>
+    <color name="such_color_20">#00CCFF</color>
+    
+    <array name="doge_colors">
+        <item>@color/such_color_1</item>
+        <item>@color/such_color_2</item>
+        <item>@color/such_color_3</item>
+        <item>@color/such_color_4</item>
+        <item>@color/such_color_5</item>
+        <item>@color/such_color_6</item>
+        <item>@color/such_color_7</item>
+        <item>@color/such_color_8</item>
+        <item>@color/such_color_9</item>
+        <item>@color/such_color_10</item>
+        <item>@color/such_color_11</item>
+        <item>@color/such_color_12</item>
+        <item>@color/such_color_13</item>
+        <item>@color/such_color_14</item>
+        <item>@color/such_color_15</item>
+        <item>@color/such_color_16</item>
+        <item>@color/such_color_17</item>
+        <item>@color/such_color_18</item>
+        <item>@color/such_color_19</item>
+        <item>@color/such_color_20</item>
+        
+    </array>
+    
+</resources>
