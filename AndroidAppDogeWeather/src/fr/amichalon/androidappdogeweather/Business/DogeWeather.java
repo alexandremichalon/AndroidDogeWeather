@@ -243,7 +243,7 @@ public class DogeWeather {
 			while (temperatureIndex < lfTemperatureLength
 					&&	wordIndex < lfLength)
 			{
-				lexicalField[wordIndex] = lfWeather[temperatureIndex];
+				lexicalField[wordIndex] = lfTemperature[temperatureIndex];
 				
 				wordIndex++;
 				temperatureIndex++;

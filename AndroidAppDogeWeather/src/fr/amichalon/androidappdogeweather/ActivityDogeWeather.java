@@ -47,7 +47,7 @@ public class ActivityDogeWeather extends Activity {
         
         runWeatherHttpRequest = true;
         DogeWeatherTask weatherHttpRequest = new DogeWeatherTask();
-        weatherHttpRequest.execute((Void) null);
+        weatherHttpRequest.execute();
     }
 
 
@@ -66,11 +66,13 @@ public class ActivityDogeWeather extends Activity {
     private void fillWeatherInfos(DogeWeather weather)
     {
     	int backImageId = weather.getBackImageId();
-    	rlytDogeWeather.setBackgroundResource(backImageId);
+    	if(backImageId > 0)
+    		rlytDogeWeather.setBackgroundResource(backImageId);
     	
     	
     	int frontImageId = weather.getFrontImageId();
-    	imgvwFront.setImageResource(frontImageId);
+    	if(frontImageId > 0)
+    		imgvwFront.setImageResource(frontImageId);
     	
     	
     	String description = weather.getDescription();
@@ -263,7 +265,7 @@ public class ActivityDogeWeather extends Activity {
 	    		try
 	    		{
 	    			// sleep one minute
-	    			Thread.sleep(1 * 60 * 1000);
+	    			Thread.sleep(1 * 5 * 1000);
 	    		}
 	    		catch(Exception exc) { }
     		}
@@ -273,8 +275,8 @@ public class ActivityDogeWeather extends Activity {
     	
     	
     	@Override
-    	protected void onProgressUpdate(Weather... progress) {
-			
+    	protected void onProgressUpdate(Weather... progress) 
+    	{
     		if (progress != null
 				&& progress.length > 0)
     		{

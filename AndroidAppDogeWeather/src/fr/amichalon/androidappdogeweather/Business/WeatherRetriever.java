@@ -22,7 +22,7 @@ public class WeatherRetriever {
 	
 	private static String OWM_URL = "http://api.openweathermap.org/data/2.5/weather?lat=%d&lon=%d"; 
 	
-	private static int PARIS_LATITUDE = 48;
+	private static int PARIS_LATITUDE = 46;
 	
 	private static int PARIS_LONGITUDE = 2;
 
