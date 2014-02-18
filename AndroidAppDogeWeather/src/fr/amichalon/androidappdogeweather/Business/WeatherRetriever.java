@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,18 +21,18 @@ import fr.amichalon.androidappdogeweather.Model.Weather;
  */
 public class WeatherRetriever {
 	
-	private static String OWM_URL = "http://api.openweathermap.org/data/2.5/weather?lat=%d&lon=%d"; 
+	private final static String OWM_URL = "http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f"; 
 	
-	private static int PARIS_LATITUDE = 46;
+	private final static double PARIS_LATITUDE = 48.853409;
 	
-	private static int PARIS_LONGITUDE = 2;
+	private final static double PARIS_LONGITUDE = 2.348800;
 
-	private static String getCurrentOWMDatas(int latitude, int longitude)
+	private static String getCurrentOWMDatas(double latitude, double longitude)
 	{
 		HttpURLConnection connection 	= null;
 		InputStream response			= null;
 		
-		String request 					= String.format(OWM_URL, latitude, longitude);
+		String request 					= String.format(Locale.US, OWM_URL, latitude, longitude);
 		
 		try
 		{
@@ -76,7 +77,7 @@ public class WeatherRetriever {
 	
 	
 	
-	public static Weather getCurrentWeather(int latitude, int longitude)
+	public static Weather getCurrentWeather(double latitude, double longitude)
 	{
 		String datas 		= getCurrentOWMDatas(latitude, longitude);
 		
@@ -86,9 +87,9 @@ public class WeatherRetriever {
 		{
 			JSONObject rootJson = new JSONObject(datas);
 			
-			JSONObject coordJson 	= rootJson.getJSONObject("coord");
-			int latitudeJson 		= coordJson.getInt("lat");
-			int longitudeJson 		= coordJson.getInt("lon");
+			JSONObject coordJson 		= rootJson.getJSONObject("coord");
+			double latitudeJson 		= coordJson.getDouble("lat");
+			double longitudeJson 		= coordJson.getDouble("lon");
 			
 			String cityJson = rootJson.getString("name");
 			

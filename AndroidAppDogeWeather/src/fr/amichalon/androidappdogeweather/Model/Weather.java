@@ -15,9 +15,9 @@ public class Weather {
 	
 	private String iconId;
 	
-	private int latitude;
+	private double latitude;
 	
-	private int longitude;
+	private double longitude;
 	
 	private int temperatureKelvin;
 
@@ -25,8 +25,8 @@ public class Weather {
 			String city,
 			String description,
 			String iconId,
-			int latitude,
-			int longitude,
+			double latitude,
+			double longitude,
 			int temperatureKelvin
 			)
 	{
@@ -53,12 +53,12 @@ public class Weather {
 		return iconId;
 	}
 	
-	public int getLatitude()
+	public double getLatitude()
 	{
 		return latitude;
 	}
 	
-	public int getLongitude()
+	public double getLongitude()
 	{
 		return longitude;
 	}

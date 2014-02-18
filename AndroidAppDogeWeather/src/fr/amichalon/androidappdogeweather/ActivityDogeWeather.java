@@ -1,6 +1,9 @@
 package fr.amichalon.androidappdogeweather;
 
 import java.util.Random;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import fr.amichalon.androidappdogeweather.Business.DogeWeather;
 import fr.amichalon.androidappdogeweather.Business.WeatherRetriever;
@@ -28,33 +31,48 @@ public class ActivityDogeWeather extends Activity {
 	
 	private DogeWeather dogeWeather;
 
-	private int latitude;
+	private double latitude;
 	
-	private int longitude;
+	private double longitude;
+	
+	private Lock lock;
 	
 	
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doge_weather);
         
-        initView();
-        dogeWeather = new DogeWeather(this);
+        lock = new ReentrantLock();
+        
+        lock.lock();
+    
+		initView();
+		
+    	dogeWeather = new DogeWeather(this);
         fillWeatherInfos(dogeWeather);
+        
+        lock.unlock();
+        
         latitude = -1;
         longitude = -1;
         
-        
         runWeatherHttpRequest = true;
         DogeWeatherTask weatherHttpRequest = new DogeWeatherTask();
-        weatherHttpRequest.execute();
+        weatherHttpRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        
+        runPopupGenerator = true;
+        LexicalFieldPopupGeneratorTask lfPopupGenerator = new LexicalFieldPopupGeneratorTask();
+        lfPopupGenerator.execute();
     }
 
 
     
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) 
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_doge_weather, menu);
         return true;
@@ -100,7 +118,7 @@ public class ActivityDogeWeather extends Activity {
 		
     	int length 		= dogeColors.length();
 		int rndIndex 	= (new Random()).nextInt(length);
-		int rndColorId 	= dogeColors.getResourceId(rndIndex, Color.MAGENTA);
+		int rndColorId 	= dogeColors.getColor(rndIndex, Color.MAGENTA);
 		
 		dogeColors.recycle();
 		
@@ -131,7 +149,7 @@ public class ActivityDogeWeather extends Activity {
     
     private void makeRandomPopup(DogeWeather weather)
     {
-    	TextView txtvwToRemove = txtvwPopups[popupsRotationIndex];
+		TextView txtvwToRemove = txtvwPopups[popupsRotationIndex];
     	
     	if(txtvwToRemove != null)
     		rlytDogeWeather.removeView(txtvwToRemove);
@@ -205,7 +223,7 @@ public class ActivityDogeWeather extends Activity {
     	resources = getResources();
     	comicSans = Typeface.createFromAsset(getAssets(), COMIC_SANS_FONT_FILE);
     	
-    	rlytDogeWeather 			= (RelativeLayout) findViewById(R.layout.activity_doge_weather);
+    	rlytDogeWeather 			= (RelativeLayout) findViewById(R.id.LayoutDoge);
     	imgvwFront 					= (ImageView) findViewById(R.id.ImgFrontDoge);
     	txtvwDescription 			= (TextView) findViewById(R.id.TextDescription);
     	txtvwCity 					= (TextView) findViewById(R.id.TextCity);
@@ -262,11 +280,8 @@ public class ActivityDogeWeather extends Activity {
 	    			publishProgress((Weather) null);
 	    		}
 	    		
-	    		try
-	    		{
-	    			// sleep one minute
-	    			Thread.sleep(1 * 5 * 1000);
-	    		}
+	    		// sleep one minute
+	    		try { Thread.sleep(1 * 60 * 1000); }
 	    		catch(Exception exc) { }
     		}
     		
@@ -284,16 +299,54 @@ public class ActivityDogeWeather extends Activity {
     			
     			if(currentWeather != null)
     			{
-    				if(!currentWeather.getDescription().equals(dogeWeather.getDescription()))
+    				lock.lock();
+    				
+					if(!currentWeather.getDescription().equals(dogeWeather.getDescription()))
         			{
     	    			initView();
-    	    			resetPopups();
         			}
-        			
         			dogeWeather.updateCurrentWeather(currentWeather);
         			fillWeatherInfos(dogeWeather);
+        			
+        			lock.unlock();
     			}
     		}
+		}
+    }
+    
+    
+    
+    
+    private boolean runPopupGenerator;
+    
+    private class LexicalFieldPopupGeneratorTask extends AsyncTask<Void, Void, Void>
+    {
+
+		@Override
+		protected Void doInBackground(Void... params) 
+		{
+			while(runPopupGenerator)
+			{
+				publishProgress();
+				
+				// sleep 1s
+				try { Thread.sleep(1 * 1000); }
+	    		catch(Exception exc) { }
+			}
+			
+			return (Void) null;
+		}
+    
+		
+		
+		@Override
+    	protected void onProgressUpdate(Void... progress) 
+    	{
+			lock.lock();
+			
+			makeRandomPopup(dogeWeather);
+			
+			lock.unlock();
 		}
     }
 }

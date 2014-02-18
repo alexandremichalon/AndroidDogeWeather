@@ -46,7 +46,7 @@ public class DogeWeather {
 	
 	
 	
-	public int getLatitude()
+	public double getLatitude()
 	{
 		if (weather != null)
 			return weather.getLatitude();
@@ -57,7 +57,7 @@ public class DogeWeather {
 	
 	
 	
-	public int getLongitude()
+	public double getLongitude()
 	{
 		if (weather != null)
 			return weather.getLongitude();
