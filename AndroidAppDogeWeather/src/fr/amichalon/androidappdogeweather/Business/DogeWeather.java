@@ -3,6 +3,7 @@
  */
 package fr.amichalon.androidappdogeweather.Business;
 
+import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
 import fr.amichalon.androidappdogeweather.Model.Weather;
 import fr.amichalon.androidappdogeweather.Models.Enumerations.WeatherIcon;
 import android.app.Activity;
@@ -52,7 +53,7 @@ public class DogeWeather {
 			return weather.getLatitude();
 		
 		else
-			return 0;
+			return GeoCoordinates.getDefault().getLatitude();
 	}
 	
 	
@@ -63,7 +64,7 @@ public class DogeWeather {
 			return weather.getLongitude();
 		
 		else
-			return 0;
+			return GeoCoordinates.getDefault().getLongitude();
 	}
 	
 	

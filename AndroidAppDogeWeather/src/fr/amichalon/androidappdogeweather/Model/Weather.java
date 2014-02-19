@@ -15,9 +15,7 @@ public class Weather {
 	
 	private String iconId;
 	
-	private double latitude;
-	
-	private double longitude;
+	private GeoCoordinates geoCoordinates;
 	
 	private int temperatureKelvin;
 
@@ -30,12 +28,26 @@ public class Weather {
 			int temperatureKelvin
 			)
 	{
-		this.city = city;
-		this.description = description;
-		this.iconId = iconId;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.temperatureKelvin = temperatureKelvin;
+		this.city 				= city;
+		this.description 		= description;
+		this.iconId 			= iconId;
+		this.geoCoordinates 	= new GeoCoordinates(latitude, longitude);
+		this.temperatureKelvin 	= temperatureKelvin;
+	}
+	
+	public Weather (
+			String city,
+			String description,
+			String iconId,
+			GeoCoordinates geoCoordinates,
+			int temperatureKelvin
+			)
+	{
+		this.city 				= city;
+		this.description 		= description;
+		this.iconId 			= iconId;
+		this.geoCoordinates 	= geoCoordinates;
+		this.temperatureKelvin 	= temperatureKelvin;
 	}
 	
 	public String getCity()
@@ -53,14 +65,19 @@ public class Weather {
 		return iconId;
 	}
 	
+	public GeoCoordinates getGeoCoordinates()
+	{
+		return geoCoordinates;
+	}
+	
 	public double getLatitude()
 	{
-		return latitude;
+		return geoCoordinates.getLatitude();
 	}
 	
 	public double getLongitude()
 	{
-		return longitude;
+		return geoCoordinates.getLongitude();
 	}
 	
 	public int getTemperatureCelcius()
