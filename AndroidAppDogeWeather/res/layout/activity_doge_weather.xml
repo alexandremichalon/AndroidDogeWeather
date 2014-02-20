@@ -57,4 +57,16 @@
         android:ems="10"
         android:gravity="center" />
 
+    <Button
+        android:id="@+id/ButtonUseLocation"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:alpha="0.85"
+        android:drawableLeft="@drawable/doge_geo"
+        android:text="@string/use_my_location"
+        android:textSize="12sp" />
+
 </RelativeLayout>

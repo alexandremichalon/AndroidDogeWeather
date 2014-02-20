@@ -27,10 +27,10 @@ public final class WeatherUtil
 
 	private static String getCurrentOWMDatas(double latitude, double longitude)
 	{
-		HttpURLConnection connection 	= null;
+		HttpURLConnection connection	= null;
 		InputStream response			= null;
 		
-		String request 					= String.format(Locale.US, OWM_URL, latitude, longitude);
+		String request					= String.format(Locale.US, OWM_URL, latitude, longitude);
 		
 		try
 		{
@@ -44,11 +44,11 @@ public final class WeatherUtil
 			connection.connect();
 			
 			
-			response 							= connection.getInputStream();
+			response							= connection.getInputStream();
 			InputStreamReader responseReader	= new InputStreamReader(response);
 			BufferedReader brdr					= new BufferedReader(responseReader);
 			
-			StringBuilder sb 	= new StringBuilder();
+			StringBuilder sb	= new StringBuilder();
 			String line			= null;
 			while ((line = brdr.readLine()) != null)
 			{
@@ -77,27 +77,27 @@ public final class WeatherUtil
 	
 	public static Weather getCurrentWeather(double latitude, double longitude)
 	{
-		String datas 		= getCurrentOWMDatas(latitude, longitude);
+		String datas	= getCurrentOWMDatas(latitude, longitude);
 		
-		Weather weather 	= null;
+		Weather weather	= null;
 		
 		try
 		{
-			JSONObject rootJson = new JSONObject(datas);
+			JSONObject rootJson	= new JSONObject(datas);
 			
-			JSONObject coordJson 		= rootJson.getJSONObject("coord");
-			double latitudeJson 		= coordJson.getDouble("lat");
-			double longitudeJson 		= coordJson.getDouble("lon");
+			JSONObject coordJson	= rootJson.getJSONObject("coord");
+			double latitudeJson		= coordJson.getDouble("lat");
+			double longitudeJson	= coordJson.getDouble("lon");
 			
 			String cityJson = rootJson.getString("name");
 			
-			JSONArray weatherArrayJson 	= rootJson.getJSONArray("weather");
-			JSONObject weatherJson 		= weatherArrayJson.getJSONObject(0);
+			JSONArray weatherArrayJson	= rootJson.getJSONArray("weather");
+			JSONObject weatherJson		= weatherArrayJson.getJSONObject(0);
 			String descriptionJson		= weatherJson.getString("description");
 			String iconIdJson			= weatherJson.getString("icon");
 			
-			JSONObject mainJson 	= rootJson.getJSONObject("main");
-			int temperatureJson 	= (int) mainJson.getDouble("temp");
+			JSONObject mainJson	= rootJson.getJSONObject("main");
+			int temperatureJson	= (int) mainJson.getDouble("temp");
 			
 			weather = new Weather(
 					cityJson, 

@@ -10,7 +10,6 @@ import fr.amichalon.androidappdogeweather.Business.DogeWeather;
 import fr.amichalon.androidappdogeweather.Business.WeatherUtil;
 import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
 import fr.amichalon.androidappdogeweather.Model.Weather;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -19,11 +18,14 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ActivityDogeWeather extends Activity {
+public class ActivityDogeWeather extends Activity 
+{
 	
 	private static final String COMIC_SANS_FONT_FILE = "fonts/comicsans.ttf";
 	
@@ -34,6 +36,8 @@ public class ActivityDogeWeather extends Activity {
 	private GeoCoordinates geoCoordinates;
 	
 	private Lock lock = new ReentrantLock();
+	
+	private Object aClickOnUseLocation = new Object();
 	
 	
     @Override
@@ -51,7 +55,7 @@ public class ActivityDogeWeather extends Activity {
     
 		initView();
 		
-    	dogeWeather = new DogeWeather(this);
+    	dogeWeather = new DogeWeather();
         fillWeatherInfos(dogeWeather);
         
         lock.unlock();
@@ -61,6 +65,10 @@ public class ActivityDogeWeather extends Activity {
         // get the current latitude and longitude 
         // via the phone geolocalization, if possible
         geoCoordinates = AndroidUtil.getPhoneCoordinates();
+
+        // get the coordinates whenever the user click the
+        // use my location button
+        btnUseLocation.setOnClickListener(getUserLocation);
         
         // start the job that get the weather info
         // from OpenWeatherMap every minute
@@ -126,16 +134,16 @@ public class ActivityDogeWeather extends Activity {
     
     
     
-    private int getRandomColorId()
+    private int getRandomColor()
     {
     	// array of color references in the resource files
     	TypedArray dogeColors = resources.obtainTypedArray(R.array.doge_colors);
 		
     	// get a random color reference in the array (0 <= rndIndex < length)
     	// get the color from that color reference (default magenta)
-    	int length 		= dogeColors.length();
-		int rndIndex 	= (new Random()).nextInt(length);
-		int rndColorId 	= dogeColors.getColor(rndIndex, Color.MAGENTA);
+    	int length		= dogeColors.length();
+		int rndIndex	= (new Random()).nextInt(length);
+		int rndColorId	= dogeColors.getColor(rndIndex, Color.MAGENTA);
 		
 		// free the resources from the array
 		dogeColors.recycle();
@@ -150,16 +158,16 @@ public class ActivityDogeWeather extends Activity {
     	Random random = new Random();
     	
     	// get a random word in the current weather lexical field ("cloud", "frosty", ...)
-    	String[] lexicalField 	= weather.getLexicalField();
-    	int lfLength 			= lexicalField.length;
-    	int rndLfIndex 			= random.nextInt(lfLength);
-    	String weatherWord 		= lexicalField[rndLfIndex];
+    	String[] lexicalField	= weather.getLexicalField();
+    	int lfLength			= lexicalField.length;
+    	int rndLfIndex			= random.nextInt(lfLength);
+    	String weatherWord		= lexicalField[rndLfIndex];
     	
     	// get a random word in the doge lexical field ("such %s", "very %s", ...)
-    	String[] dogeSentences 	= resources.getStringArray(R.array.doge_sentences);
-    	int dogeLength 			= dogeSentences.length;
-    	int rndDogeIndex 		= random.nextInt(dogeLength);
-    	String dogeSentence 	= dogeSentences[rndDogeIndex];
+    	String[] dogeSentences	= resources.getStringArray(R.array.doge_sentences);
+    	int dogeLength			= dogeSentences.length;
+    	int rndDogeIndex		= random.nextInt(dogeLength);
+    	String dogeSentence		= dogeSentences[rndDogeIndex];
     	
     	// construct the sentence
     	return String.format(Locale.US, dogeSentence, weatherWord);
@@ -187,24 +195,24 @@ public class ActivityDogeWeather extends Activity {
     	String rndText = getRandomPopupText(weather);
     	txtvw.setText(rndText);
     	txtvw.setTypeface(comicSans);
-    	txtvw.setTextColor(getRandomColorId());
+    	txtvw.setTextColor(getRandomColor());
     	
-    	int screenWidth 	= rlytDogeWeather.getWidth();
-    	int screenHeight 	= rlytDogeWeather.getHeight();
+    	int screenWidth		= rlytDogeWeather.getWidth();
+    	int screenHeight	= rlytDogeWeather.getHeight();
     	// old version, but could not calculate W and H in time on TextView
     	// int txtvwWidth = txtvw.getWidth();
     	// int txtvwHeight = txtvw.getHeight();
-    	int txtvwWidth 		= screenWidth / 10;
-    	int txtvwHeight 	= screenHeight / 10;
-    	int screenPaddingL 	= rlytDogeWeather.getPaddingLeft();
-    	int screenPaddingR 	= rlytDogeWeather.getPaddingRight();
-    	int screenPaddingT 	= rlytDogeWeather.getPaddingTop();
-    	int screenPaddingB 	= rlytDogeWeather.getPaddingBottom();
+    	int txtvwWidth		= screenWidth / 10;
+    	int txtvwHeight		= screenHeight / 10;
+    	int screenPaddingL	= rlytDogeWeather.getPaddingLeft();
+    	int screenPaddingR	= rlytDogeWeather.getPaddingRight();
+    	int screenPaddingT	= rlytDogeWeather.getPaddingTop();
+    	int screenPaddingB	= rlytDogeWeather.getPaddingBottom();
     	
-    	int maxWidthDrawable = screenWidth - screenPaddingR - txtvwWidth;
-    	int maxHeightDrawable = screenHeight - screenPaddingB - txtvwHeight;
+    	int maxWidthDrawable	= screenWidth - screenPaddingR - txtvwWidth;
+    	int maxHeightDrawable	= screenHeight - screenPaddingB - txtvwHeight;
     	
-    	Random random  = new Random();
+    	Random random = new Random();
     	
     	// place the textview considering the screen padding
     	// for simplification, textview width = screen width / 10
@@ -259,22 +267,25 @@ public class ActivityDogeWeather extends Activity {
     	
     	// get the app main layout and static textviews
     	// initialize textviews with comic sans font and random text colors
-    	rlytDogeWeather 			= (RelativeLayout) findViewById(R.id.LayoutDoge);
-    	imgvwFront 					= (ImageView) findViewById(R.id.ImgFrontDoge);
-    	txtvwDescription 			= (TextView) findViewById(R.id.TextDescription);
-    	txtvwCity 					= (TextView) findViewById(R.id.TextCity);
-    	txtvwTemperatureFahrenheit 	= (TextView) findViewById(R.id.TextTemperatureFahrenheit);
-    	txtvwTemperatureCelcius 	= (TextView) findViewById(R.id.TextTemperatureCelcius);
+    	rlytDogeWeather				= (RelativeLayout) findViewById(R.id.LayoutDoge);
+    	imgvwFront					= (ImageView) findViewById(R.id.ImgFrontDoge);
+    	btnUseLocation				= (Button) findViewById(R.id.ButtonUseLocation);
+    	txtvwDescription			= (TextView) findViewById(R.id.TextDescription);
+    	txtvwCity					= (TextView) findViewById(R.id.TextCity);
+    	txtvwTemperatureFahrenheit	= (TextView) findViewById(R.id.TextTemperatureFahrenheit);
+    	txtvwTemperatureCelcius		= (TextView) findViewById(R.id.TextTemperatureCelcius);
     	
+    	btnUseLocation				.setTypeface(comicSans);
     	txtvwDescription			.setTypeface(comicSans);
     	txtvwCity					.setTypeface(comicSans);
     	txtvwTemperatureCelcius		.setTypeface(comicSans);
     	txtvwTemperatureFahrenheit	.setTypeface(comicSans);
     	
-    	txtvwDescription			.setTextColor(getRandomColorId());
-    	txtvwCity					.setTextColor(getRandomColorId());
-    	txtvwTemperatureCelcius		.setTextColor(getRandomColorId());
-    	txtvwTemperatureFahrenheit	.setTextColor(getRandomColorId());
+    	btnUseLocation				.setTextColor(getRandomColor());
+    	txtvwDescription			.setTextColor(getRandomColor());
+    	txtvwCity					.setTextColor(getRandomColor());
+    	txtvwTemperatureCelcius		.setTextColor(getRandomColor());
+    	txtvwTemperatureFahrenheit	.setTextColor(getRandomColor());
     	
     	// initialize the popup array
     	resetPopups();
@@ -284,6 +295,7 @@ public class ActivityDogeWeather extends Activity {
     
     private RelativeLayout rlytDogeWeather;
     private ImageView imgvwFront;
+    private Button btnUseLocation;
     private TextView txtvwDescription;
     private TextView txtvwCity;
     private TextView txtvwTemperatureFahrenheit;
@@ -292,6 +304,22 @@ public class ActivityDogeWeather extends Activity {
     private TextView[] txtvwPopups;
     private int popupsRotationIndex;
     private static final int POPUPS_MAXIMUM_ROTATION = 4;
+    
+    
+    private View.OnClickListener getUserLocation = new View.OnClickListener()
+    {
+		@Override
+		public void onClick(View v) 
+		{
+			geoCoordinates = AndroidUtil.getPhoneCoordinates();
+			
+			// awake the job that question OpenWeatherMap
+			synchronized(aClickOnUseLocation)
+			{
+				aClickOnUseLocation.notifyAll();
+			}
+		}
+	};
     
     
     
@@ -317,8 +345,15 @@ public class ActivityDogeWeather extends Activity {
 	    			publishProgress((Weather) null);
 	    		}
 	    		
-	    		// sleep one minute
-	    		try { Thread.sleep(1 * 60 * 1000); }
+	    		// sleep one minute or
+	    		// until use my location is clicked
+	    		try {
+	    			synchronized(aClickOnUseLocation)
+	    			{
+	    				aClickOnUseLocation.wait(1 * 60 * 1000);
+	    			}
+	    			//Thread.sleep(1 * 60 * 1000); 
+    			}
 	    		catch(Exception exc) { }
     		}
     		

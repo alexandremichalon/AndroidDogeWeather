@@ -7,8 +7,8 @@ package fr.amichalon.androidappdogeweather.Model;
  * @author alexandre.michalon
  *
  */
-public class Weather {
-	
+public class Weather 
+{	
 	private String city;
 	
 	private String description;
@@ -28,11 +28,11 @@ public class Weather {
 			int temperatureKelvin
 			)
 	{
-		this.city 				= city;
-		this.description 		= description;
-		this.iconId 			= iconId;
-		this.geoCoordinates 	= new GeoCoordinates(latitude, longitude);
-		this.temperatureKelvin 	= temperatureKelvin;
+		this.city				= city;
+		this.description		= description;
+		this.iconId				= iconId;
+		this.geoCoordinates		= new GeoCoordinates(latitude, longitude);
+		this.temperatureKelvin	= temperatureKelvin;
 	}
 	
 	public Weather (
@@ -43,11 +43,11 @@ public class Weather {
 			int temperatureKelvin
 			)
 	{
-		this.city 				= city;
-		this.description 		= description;
-		this.iconId 			= iconId;
-		this.geoCoordinates 	= geoCoordinates;
-		this.temperatureKelvin 	= temperatureKelvin;
+		this.city				= city;
+		this.description		= description;
+		this.iconId				= iconId;
+		this.geoCoordinates		= geoCoordinates;
+		this.temperatureKelvin	= temperatureKelvin;
 	}
 	
 	public String getCity()
