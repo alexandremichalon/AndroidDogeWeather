@@ -62,14 +62,14 @@ public final class AndroidUtil
 			// - isn't allowed to bill any service
 			// - isn't required to provide the speed
 			// - has no accuracy requirement regarding the latitude or the longitude
-			// - has no requirement regarding the level of energy consumption
+			// - prefers low energy consumption
 			Criteria criteria = new Criteria();
 			criteria.setAltitudeRequired	(false);
 			criteria.setBearingRequired		(false);
 			criteria.setCostAllowed			(false);
 			criteria.setSpeedRequired		(false);
 			criteria.setHorizontalAccuracy	(Criteria.NO_REQUIREMENT);
-			criteria.setPowerRequirement	(Criteria.NO_REQUIREMENT);
+			criteria.setPowerRequirement	(Criteria.POWER_LOW);
 			
 			String provider = locationManager.getBestProvider(criteria, true);
 			

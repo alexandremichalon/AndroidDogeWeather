@@ -13,6 +13,7 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.util.Log;
 import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
 import fr.amichalon.androidappdogeweather.Model.Weather;
 
@@ -62,7 +63,7 @@ public final class WeatherUtil
 		}
 		catch(Throwable t)
 		{
-			t.printStackTrace();
+			Log.e("DogeWeather : WeatherUtil#getCurrentOWMDatas(double, double)", "Connection", t);
 		}
 		finally
 		{
@@ -108,9 +109,9 @@ public final class WeatherUtil
 					temperatureJson
 					);
 		} 
-		catch (Exception e)
+		catch (Throwable t)
 		{
-			e.printStackTrace();
+			Log.e("DogeWeather : WeatherUtil#getCurrentWeather(double, double)", "Parsing JSON", t);
 		}
 		
 		return weather;

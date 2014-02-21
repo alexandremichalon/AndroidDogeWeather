@@ -37,8 +37,6 @@ public class ActivityDogeWeather extends Activity
 	
 	private Lock lock = new ReentrantLock();
 	
-	private Object aClickOnUseLocation = new Object();
-	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -71,13 +69,12 @@ public class ActivityDogeWeather extends Activity
         btnUseLocation.setOnClickListener(getUserLocation);
         
         // start the job that get the weather info
-        // from OpenWeatherMap every minute
-        runWeatherHttpRequest = true;
+        // from OpenWeatherMap (once)
         DogeWeatherTask weatherHttpRequest = new DogeWeatherTask();
         weatherHttpRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         
         // start the job that generate popups randomly
-        // on the screen
+        // on the screen every second
         runPopupGenerator = true;
         LexicalFieldPopupGeneratorTask lfPopupGenerator = new LexicalFieldPopupGeneratorTask();
         lfPopupGenerator.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -121,13 +118,21 @@ public class ActivityDogeWeather extends Activity
     	txtvwCity.setText(city);
     	
     	
+    	int temperatureC			= weather.getTemperatureCelcius();
+    	int temperatureF			= weather.getTemperatureFahrenheit();
+    	boolean temperatureKnown	= (temperatureC != temperatureF);
+    			
     	// current temperature in celcius
-    	String temperatureCelcius = weather.getTemperatureCelcius() + "°C";
+    	String temperatureCelcius = (temperatureKnown)
+    			? temperatureC + "°C"
+				: "";
     	txtvwTemperatureCelcius.setText(temperatureCelcius);
     	
     	
     	// current temperature in farhenheit
-    	String temperatureFahrenheit = weather.getTemperatureFahrenheit() + "°F";
+    	String temperatureFahrenheit = (temperatureKnown)
+    			? temperatureF + "°F"
+				: "";
     	txtvwTemperatureFahrenheit.setText(temperatureFahrenheit);
     }
     
@@ -178,58 +183,64 @@ public class ActivityDogeWeather extends Activity
     
     private void makeRandomPopup(DogeWeather weather)
     {
-    	// get the oldest popup
-		TextView txtvwToRemove = txtvwPopups[popupsRotationIndex];
-    	
-		// if exist, remove it
-    	if(txtvwToRemove != null)
-    		rlytDogeWeather.removeView(txtvwToRemove);
-    	
-    	// new popup :
-    	// - random sentence
-    	// - comic sans
-    	// - random color
-    	// - random left padding (x position)
-    	// - random top padding (y position)
-    	TextView txtvw = new TextView(this);
-    	String rndText = getRandomPopupText(weather);
-    	txtvw.setText(rndText);
-    	txtvw.setTypeface(comicSans);
-    	txtvw.setTextColor(getRandomColor());
-    	
     	int screenWidth		= rlytDogeWeather.getWidth();
     	int screenHeight	= rlytDogeWeather.getHeight();
-    	// old version, but could not calculate W and H in time on TextView
-    	// int txtvwWidth = txtvw.getWidth();
-    	// int txtvwHeight = txtvw.getHeight();
-    	int txtvwWidth		= screenWidth / 10;
-    	int txtvwHeight		= screenHeight / 10;
-    	int screenPaddingL	= rlytDogeWeather.getPaddingLeft();
-    	int screenPaddingR	= rlytDogeWeather.getPaddingRight();
-    	int screenPaddingT	= rlytDogeWeather.getPaddingTop();
-    	int screenPaddingB	= rlytDogeWeather.getPaddingBottom();
     	
-    	int maxWidthDrawable	= screenWidth - screenPaddingR - txtvwWidth;
-    	int maxHeightDrawable	= screenHeight - screenPaddingB - txtvwHeight;
-    	
-    	Random random = new Random();
-    	
-    	// place the textview considering the screen padding
-    	// for simplification, textview width = screen width / 10
-    	// and textview height = screen height / 10
-    	txtvw.setPadding(
-    			random.nextInt(maxWidthDrawable - screenPaddingL) + screenPaddingL,
-    			random.nextInt(maxHeightDrawable - screenPaddingT) + screenPaddingT,
-    			0,
-    			0);
-    	
-    	// make the textview appear on screen
-    	rlytDogeWeather.addView(txtvw);
-    	
-    	// make the new textview the newest, and
-    	// the next one the oldest
-    	txtvwPopups[popupsRotationIndex] = txtvw;
-    	popupsRotationIndex = (popupsRotationIndex + 1) % POPUPS_MAXIMUM_ROTATION;
+    	// check if the layout is drawn
+    	if(screenWidth > 0 && screenHeight > 0)
+    	{
+	    	// get the oldest popup
+			TextView txtvwToRemove = txtvwPopups[popupsRotationIndex];
+	    	
+			// if exist, remove it
+	    	if(txtvwToRemove != null)
+	    		rlytDogeWeather.removeView(txtvwToRemove);
+	    	
+	    	// new popup :
+	    	// - random sentence
+	    	// - comic sans
+	    	// - random color
+	    	// - random left padding (x position)
+	    	// - random top padding (y position)
+	    	TextView txtvw = new TextView(this);
+	    	String rndText = getRandomPopupText(weather);
+	    	txtvw.setText(rndText);
+	    	txtvw.setTypeface(comicSans);
+	    	txtvw.setTextColor(getRandomColor());
+	    	
+	    	
+	    	// old version, but could not calculate W and H in time on TextView
+	    	// int txtvwWidth = txtvw.getWidth();
+	    	// int txtvwHeight = txtvw.getHeight();
+	    	int txtvwWidth		= screenWidth / 10;
+	    	int txtvwHeight		= screenHeight / 10;
+	    	int screenPaddingL	= rlytDogeWeather.getPaddingLeft();
+	    	int screenPaddingR	= rlytDogeWeather.getPaddingRight();
+	    	int screenPaddingT	= rlytDogeWeather.getPaddingTop();
+	    	int screenPaddingB	= rlytDogeWeather.getPaddingBottom();
+	    	
+	    	int maxWidthDrawable	= screenWidth - screenPaddingR - txtvwWidth;
+	    	int maxHeightDrawable	= screenHeight - screenPaddingB - txtvwHeight;
+	    	
+	    	Random random = new Random();
+	    	
+	    	// place the textview considering the screen padding
+	    	// for simplification, textview width = screen width / 10
+	    	// and textview height = screen height / 10
+	    	txtvw.setPadding(
+	    			random.nextInt(maxWidthDrawable - screenPaddingL) + screenPaddingL,
+	    			random.nextInt(maxHeightDrawable - screenPaddingT) + screenPaddingT,
+	    			0,
+	    			0);
+	    	
+	    	// make the textview appear on screen
+	    	rlytDogeWeather.addView(txtvw);
+	    	
+	    	// make the new textview the newest, and
+	    	// the next one the oldest
+	    	txtvwPopups[popupsRotationIndex] = txtvw;
+	    	popupsRotationIndex = (popupsRotationIndex + 1) % POPUPS_MAXIMUM_ROTATION;
+    	}
     }
     
     
@@ -284,8 +295,9 @@ public class ActivityDogeWeather extends Activity
     	btnUseLocation				.setTextColor(getRandomColor());
     	txtvwDescription			.setTextColor(getRandomColor());
     	txtvwCity					.setTextColor(getRandomColor());
-    	txtvwTemperatureCelcius		.setTextColor(getRandomColor());
-    	txtvwTemperatureFahrenheit	.setTextColor(getRandomColor());
+    	int temperatureColor = getRandomColor();
+    	txtvwTemperatureCelcius		.setTextColor(temperatureColor);
+    	txtvwTemperatureFahrenheit	.setTextColor(temperatureColor);
     	
     	// initialize the popup array
     	resetPopups();
@@ -313,77 +325,48 @@ public class ActivityDogeWeather extends Activity
 		{
 			geoCoordinates = AndroidUtil.getPhoneCoordinates();
 			
-			// awake the job that question OpenWeatherMap
-			synchronized(aClickOnUseLocation)
-			{
-				aClickOnUseLocation.notifyAll();
-			}
+			// start the job that get the weather info
+	        // from OpenWeatherMap (once)
+	        DogeWeatherTask weatherHttpRequest = new DogeWeatherTask();
+	        weatherHttpRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	};
     
     
     
-    private boolean runWeatherHttpRequest;
-    
-    private class DogeWeatherTask extends AsyncTask<Void, Weather, Void> {
-
+    private class DogeWeatherTask extends AsyncTask<Void, Void, Weather> 
+    {
     	@Override
-    	protected Void doInBackground(Void... params) 
+    	protected Weather doInBackground(Void... params) 
     	{
-    		while (runWeatherHttpRequest)
-    		{
-	    		if (AndroidUtil.isNetworkAvailable())
-	    		{
-	    			Weather weather = (geoCoordinates == null)
-	    					? WeatherUtil.getCurrentDefaultWeather()
-							: WeatherUtil.getCurrentWeather(geoCoordinates.getLatitude(), geoCoordinates.getLongitude());
-	    					
-	    			publishProgress(weather);
-	    		}
-	    		else
-	    		{
-	    			publishProgress((Weather) null);
-	    		}
-	    		
-	    		// sleep one minute or
-	    		// until use my location is clicked
-	    		try {
-	    			synchronized(aClickOnUseLocation)
-	    			{
-	    				aClickOnUseLocation.wait(1 * 60 * 1000);
-	    			}
-	    			//Thread.sleep(1 * 60 * 1000); 
-    			}
-	    		catch(Exception exc) { }
-    		}
+    		Weather weather = null;
     		
-    		return (Void) null;
+    		if (AndroidUtil.isNetworkAvailable())
+    		{
+    			weather = (geoCoordinates == null)
+    					? WeatherUtil.getCurrentDefaultWeather()
+						: WeatherUtil.getCurrentWeather(geoCoordinates.getLatitude(), geoCoordinates.getLongitude());
+    		}
+
+    		return weather;
     	}
     	
     	
     	@Override
-    	protected void onProgressUpdate(Weather... progress) 
+    	protected void onPostExecute(Weather weather)
     	{
-    		if (progress != null
-				&& progress.length > 0)
+    		if (weather != null)
     		{
-    			Weather currentWeather = progress[0];
+				lock.lock();
+				
+    			initView();
     			
-    			if(currentWeather != null)
-    			{
-    				lock.lock();
-    				
-					if(!currentWeather.getDescription().equals(dogeWeather.getDescription()))
-        			{
-    	    			initView();
-        			}
-        			dogeWeather.updateCurrentWeather(currentWeather);
-        			fillWeatherInfos(dogeWeather);
-        			
-        			lock.unlock();
-    			}
-    		}
-		}
+    			dogeWeather.updateCurrentWeather(weather);
+    			fillWeatherInfos(dogeWeather);
+    			
+    			lock.unlock();
+			}
+    	}
     }
     
     
