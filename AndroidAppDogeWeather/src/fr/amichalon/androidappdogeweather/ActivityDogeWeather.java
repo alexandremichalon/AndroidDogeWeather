@@ -3,14 +3,13 @@ package fr.amichalon.androidappdogeweather;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import fr.amichalon.androidappdogeweather.Business.AndroidUtil;
 import fr.amichalon.androidappdogeweather.Business.DogeWeather;
 import fr.amichalon.androidappdogeweather.Business.WeatherUtil;
 import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
 import fr.amichalon.androidappdogeweather.Model.Weather;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
