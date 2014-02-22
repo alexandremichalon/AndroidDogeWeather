@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="IconDuplicates">
+        <ignore path="res/drawable-xxhdpi/back_10n.png" />
+        <ignore path="res/drawable-xxhdpi/front_04n.png" />
+        <ignore path="res/drawable-xxhdpi/front_09n.png" />
+        <ignore path="res/drawable-xxhdpi/front_10n.png" />
+        <ignore path="res/drawable-xxhdpi/front_11n.png" />
+        <ignore path="res/drawable-xxhdpi/front_13n.png" />
+    </issue>
+    <issue id="Overdraw">
+        <ignore path="res/layout/activity_doge_weather.xml" />
+    </issue>
+</lint>

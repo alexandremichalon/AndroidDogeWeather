@@ -1,5 +1,6 @@
 package fr.amichalon.androidappdogeweather;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.locks.Lock;
@@ -35,7 +36,7 @@ public class ActivityDogeWeather extends Activity
 
 	private GeoCoordinates geoCoordinates;
 	
-	private Lock lock = new ReentrantLock();
+	private Object drawLock = new Object();
 	
 	
     @Override
@@ -47,18 +48,17 @@ public class ActivityDogeWeather extends Activity
         // initialize AndroidUtil with the context of the application
         AndroidUtil.setContext(getApplicationContext());
         
+        // initialize the use my location button
+        locationState = ButtonLocationState.DEFAULT;
         
-        // BEGIN LOCK : initialize view and update doge
-        lock.lock();
-    
-		initView();
-		
-    	dogeWeather = new DogeWeather();
-        fillWeatherInfos(dogeWeather);
-        
-        lock.unlock();
-        // END LOCK
-        
+        // initialize the view
+        synchronized (drawLock) 
+        {
+	    	initView();
+			
+	    	dogeWeather = new DogeWeather();
+	        fillWeatherInfos(dogeWeather);
+        }
         
         // get the current latitude and longitude 
         // via the phone geolocalization, if possible
@@ -323,6 +323,13 @@ public class ActivityDogeWeather extends Activity
 		@Override
 		public void onClick(View v) 
 		{
+			synchronized (drawLock)
+			{
+				btnUseLocation.setText(R.string.waiting_location);
+			}
+			
+			locationState = ButtonLocationState.WAITING;
+			
 			geoCoordinates = AndroidUtil.getPhoneCoordinates();
 			
 			// start the job that get the weather info
@@ -343,9 +350,22 @@ public class ActivityDogeWeather extends Activity
     		
     		if (AndroidUtil.isNetworkAvailable())
     		{
-    			weather = (geoCoordinates == null)
-    					? WeatherUtil.getCurrentDefaultWeather()
-						: WeatherUtil.getCurrentWeather(geoCoordinates.getLatitude(), geoCoordinates.getLongitude());
+    			try
+    			{
+	    			weather = (geoCoordinates == null)
+	    					? WeatherUtil.getCurrentDefaultWeather()
+							: WeatherUtil.getCurrentWeather(geoCoordinates.getLatitude(), geoCoordinates.getLongitude());
+					
+					switchLocationState(ButtonLocationState.LOCATED);
+    			}
+    			catch(IOException ioe)
+    			{
+    				switchLocationState(ButtonLocationState.NOT_LOCATED);
+    			}
+    		}
+    		else
+    		{
+    			switchLocationState(ButtonLocationState.NOT_CONNECTED);
     		}
 
     		return weather;
@@ -355,17 +375,35 @@ public class ActivityDogeWeather extends Activity
     	@Override
     	protected void onPostExecute(Weather weather)
     	{
-    		if (weather != null)
-    		{
-				lock.lock();
-				
-    			initView();
-    			
-    			dogeWeather.updateCurrentWeather(weather);
-    			fillWeatherInfos(dogeWeather);
-    			
-    			lock.unlock();
-			}
+    		synchronized(drawLock) 
+			{
+	    		if (weather != null)
+	    		{
+					initView();
+	    			
+	    			dogeWeather.updateCurrentWeather(weather);
+	    			fillWeatherInfos(dogeWeather);
+				}
+    		
+				switch (locationState)
+				{
+					case LOCATED:
+						btnUseLocation.setText(R.string.located);
+						break;
+						
+					case NOT_CONNECTED:
+						btnUseLocation.setText(R.string.not_connected);
+						break;
+						
+					case NOT_LOCATED:
+	    				btnUseLocation.setText(R.string.not_located);
+						break;
+						
+					default:
+						btnUseLocation.setText(R.string.use_my_location);
+						break;
+				}
+    		}
     	}
     }
     
@@ -397,11 +435,33 @@ public class ActivityDogeWeather extends Activity
 		@Override
     	protected void onProgressUpdate(Void... progress) 
     	{
-			lock.lock();
-			
-			makeRandomPopup(dogeWeather);
-			
-			lock.unlock();
+			synchronized (drawLock)
+			{
+				makeRandomPopup(dogeWeather);
+			}
 		}
+    }
+    
+    
+    
+    
+    private enum ButtonLocationState
+    {
+    	DEFAULT,
+    	WAITING,
+    	NOT_CONNECTED,
+    	NOT_LOCATED,
+    	LOCATED
+    }
+    
+    private ButtonLocationState locationState;
+    
+    private void switchLocationState(ButtonLocationState locationState)
+    {
+    	if (locationState == ButtonLocationState.WAITING
+			|| this.locationState != ButtonLocationState.DEFAULT)
+    	{
+    		this.locationState = locationState;
+    	}
     }
 }

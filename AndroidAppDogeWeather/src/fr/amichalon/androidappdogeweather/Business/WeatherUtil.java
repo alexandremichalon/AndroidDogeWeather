@@ -4,6 +4,7 @@
 package fr.amichalon.androidappdogeweather.Business;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -27,6 +28,7 @@ public final class WeatherUtil
 	private final static String OWM_URL = "http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f"; 
 
 	private static String getCurrentOWMDatas(double latitude, double longitude)
+			throws IOException
 	{
 		HttpURLConnection connection	= null;
 		InputStream response			= null;
@@ -61,9 +63,14 @@ public final class WeatherUtil
 			
 			return sb.toString();
 		}
+		catch(IOException ioe)
+		{
+			Log.e("DogeWeather : WeatherUtil#getCurrentOWMDatas(double, double)", "Connection", ioe);
+			throw ioe;
+		}
 		catch(Throwable t)
 		{
-			Log.e("DogeWeather : WeatherUtil#getCurrentOWMDatas(double, double)", "Connection", t);
+			Log.e("DogeWeather : WeatherUtil#getCurrentOWMDatas(double, double)", "Requesting OpenWeatehrMap", t);
 		}
 		finally
 		{
@@ -76,7 +83,8 @@ public final class WeatherUtil
 	
 	
 	
-	public static Weather getCurrentWeather(double latitude, double longitude)
+	public static Weather getCurrentWeather(double latitude, double longitude) 
+			throws IOException
 	{
 		String datas	= getCurrentOWMDatas(latitude, longitude);
 		
@@ -108,7 +116,7 @@ public final class WeatherUtil
 					longitudeJson, 
 					temperatureJson
 					);
-		} 
+		}
 		catch (Throwable t)
 		{
 			Log.e("DogeWeather : WeatherUtil#getCurrentWeather(double, double)", "Parsing JSON", t);
@@ -120,6 +128,7 @@ public final class WeatherUtil
 	
 	
 	public static Weather getCurrentDefaultWeather() 
+			throws IOException 
 	{
 		GeoCoordinates defaultCoordinates = GeoCoordinates.getDefault();
 		
