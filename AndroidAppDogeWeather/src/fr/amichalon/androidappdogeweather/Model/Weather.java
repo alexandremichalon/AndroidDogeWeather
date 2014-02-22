@@ -7,17 +7,15 @@ package fr.amichalon.androidappdogeweather.Model;
  * @author alexandre.michalon
  *
  */
-public class Weather {
-	
+public class Weather 
+{	
 	private String city;
 	
 	private String description;
 	
 	private String iconId;
 	
-	private int latitude;
-	
-	private int longitude;
+	private GeoCoordinates geoCoordinates;
 	
 	private int temperatureKelvin;
 
@@ -25,17 +23,31 @@ public class Weather {
 			String city,
 			String description,
 			String iconId,
-			int latitude,
-			int longitude,
+			double latitude,
+			double longitude,
 			int temperatureKelvin
 			)
 	{
-		this.city = city;
-		this.description = description;
-		this.iconId = iconId;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.temperatureKelvin = temperatureKelvin;
+		this.city				= city;
+		this.description		= description;
+		this.iconId				= iconId;
+		this.geoCoordinates		= new GeoCoordinates(latitude, longitude);
+		this.temperatureKelvin	= temperatureKelvin;
+	}
+	
+	public Weather (
+			String city,
+			String description,
+			String iconId,
+			GeoCoordinates geoCoordinates,
+			int temperatureKelvin
+			)
+	{
+		this.city				= city;
+		this.description		= description;
+		this.iconId				= iconId;
+		this.geoCoordinates		= geoCoordinates;
+		this.temperatureKelvin	= temperatureKelvin;
 	}
 	
 	public String getCity()
@@ -53,14 +65,19 @@ public class Weather {
 		return iconId;
 	}
 	
-	public int getLatitude()
+	public GeoCoordinates getGeoCoordinates()
 	{
-		return latitude;
+		return geoCoordinates;
 	}
 	
-	public int getLongitude()
+	public double getLatitude()
 	{
-		return longitude;
+		return geoCoordinates.getLatitude();
+	}
+	
+	public double getLongitude()
+	{
+		return geoCoordinates.getLongitude();
 	}
 	
 	public int getTemperatureCelcius()

@@ -3,34 +3,26 @@
  */
 package fr.amichalon.androidappdogeweather.Business;
 
+import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
 import fr.amichalon.androidappdogeweather.Model.Weather;
-import fr.amichalon.androidappdogeweather.Models.Enumerations.WeatherIcon;
-import android.app.Activity;
-import android.content.res.Resources;
+import fr.amichalon.androidappdogeweather.Model.Enumerations.WeatherIcon;
 
 /**
  * @author alexandre.michalon
  *
  */
-public class DogeWeather {
+public class DogeWeather 
+{
 	
-	private DogeWeather(
-			Activity activity,
-			Weather weather
-			)
+	public DogeWeather(Weather weather)
 	{
-		this.activityDogeWeather = activity;
-		
-		if (activityDogeWeather != null)
-			this.resources = activityDogeWeather.getResources();
-		
 		updateCurrentWeather(weather);
 	}
 	
 	
-	public DogeWeather(Activity activity)
+	public DogeWeather()
 	{
-		this(activity, null);
+		this(null);
 	}
 	
 
@@ -40,30 +32,26 @@ public class DogeWeather {
 	
 	private String[] lexicalField;
 	
-	private Activity activityDogeWeather;
-	
-	private Resources resources;
 	
 	
-	
-	public int getLatitude()
+	public double getLatitude()
 	{
 		if (weather != null)
 			return weather.getLatitude();
 		
 		else
-			return 0;
+			return GeoCoordinates.getDefault().getLatitude();
 	}
 	
 	
 	
-	public int getLongitude()
+	public double getLongitude()
 	{
 		if (weather != null)
 			return weather.getLongitude();
 		
 		else
-			return 0;
+			return GeoCoordinates.getDefault().getLongitude();
 	}
 	
 	
@@ -118,7 +106,7 @@ public class DogeWeather {
 			return weatherIcon.getBackImageId();
 		
 		else 
-			return 0;
+			return WeatherIcon.DEFAULT.getBackImageId();
 	}
 	
 	
@@ -129,7 +117,7 @@ public class DogeWeather {
 			return weatherIcon.getFrontImageId();
 		
 		else 
-			return 0;
+			return WeatherIcon.DEFAULT.getFrontImageId();
 	}
 	
 	
@@ -160,26 +148,24 @@ public class DogeWeather {
 	 */
 	private void buildLexicalField()
 	{
-		String[] lfAll = resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.lexical_field_all);
+		String[] lfAll = AndroidUtil.getLexicalFieldAll();
 		
 		
 		// without weatherIcon, we take the default lexical field
 		if (weatherIcon == null
 				|| weather == null)
 		{
-			String[] lfWeather 		= resources.getStringArray(
-					fr.amichalon.androidappdogeweather.R.array.lexical_field_default);
+			String[] lfWeather	= AndroidUtil.getLexicalFieldDefault();
 			
-			int allIndex			= 0;
-			int weatherIndex		= 0;
-			int wordIndex 			= 0;
-			int lfAllLength 		= lfAll.length;
-			int lfWeatherLength 	= lfWeather.length;
-			int lfLength 			= lfAllLength + lfWeatherLength;
+			int allIndex		= 0;
+			int weatherIndex	= 0;
+			int wordIndex		= 0;
+			int lfAllLength		= lfAll.length;
+			int lfWeatherLength	= lfWeather.length;
+			int lfLength		= lfAllLength + lfWeatherLength;
 			
 			
-			lexicalField 			= new String[lfLength];
+			lexicalField		= new String[lfLength];
 			
 			while (allIndex < lfAllLength
 					&&	wordIndex < lfLength)
@@ -204,21 +190,19 @@ public class DogeWeather {
 		// the weather gives the temperature, we add associated temperature lexical field
 		else
 		{
-			String[] lfWeather = resources.getStringArray(weatherIcon.getLexicalFieldId());
-			
-			String[] lfTemperature = getTemperatureLexicalField();
+			String[] lfWeather		= AndroidUtil.getStringArray(weatherIcon.getLexicalFieldId());
+			String[] lfTemperature	= getTemperatureLexicalField();
 
 			int allIndex			= 0;
 			int weatherIndex		= 0;
 			int temperatureIndex	= 0;
-			int wordIndex 			= 0;
-			int lfAllLength 		= lfAll.length;
-			int lfWeatherLength 	= lfWeather.length;
+			int wordIndex			= 0;
+			int lfAllLength			= lfAll.length;
+			int lfWeatherLength		= lfWeather.length;
 			int lfTemperatureLength	= lfTemperature.length;
-			int lfLength 			= lfAllLength + lfWeatherLength + lfTemperatureLength;
+			int lfLength			= lfAllLength + lfWeatherLength + lfTemperatureLength;
 			
-			
-			lexicalField 			= new String[lfLength];
+			lexicalField			= new String[lfLength];
 			
 			while (allIndex < lfAllLength
 					&&	wordIndex < lfLength)
@@ -243,7 +227,7 @@ public class DogeWeather {
 			while (temperatureIndex < lfTemperatureLength
 					&&	wordIndex < lfLength)
 			{
-				lexicalField[wordIndex] = lfWeather[temperatureIndex];
+				lexicalField[wordIndex] = lfTemperature[temperatureIndex];
 				
 				wordIndex++;
 				temperatureIndex++;
@@ -266,45 +250,28 @@ public class DogeWeather {
 		int temperature = weather.getTemperatureCelcius();
 		
 		if (temperature <= -30)
-		{
-			return resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.inferior_to_minus_30);
-		}
+			return AndroidUtil.getInferiorToMinus30();
+		
 		else if (-30 < temperature && temperature <= -15)
-		{
-			return resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.between_minus_30_and_minus_15);
-		}
+			return AndroidUtil.getBetweenMinus30AndMinus15();
+		
 		else if (-15 < temperature && temperature <= -7)
-		{
-			return resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.between_minus_15_and_minus_7);
-		}
+			return AndroidUtil.getBetweenMinus15AndMinus7();
+		
 		else if (-7 < temperature && temperature <= 0)
-		{
-			return resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.between_minus_7_and_0);
-		}
+			return AndroidUtil.getBetweenMinus7And0();
+		
 		else if (0 < temperature && temperature <= 10)
-		{
-			return resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.between_0_and_10);
-		}
+			return AndroidUtil.getBetween0And10();
+		
 		else if (10 < temperature && temperature <= 20)
-		{
-			return resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.between_10_and_20);
-		}
+			return AndroidUtil.getBetween10And20();
+		
 		else if (20 < temperature && temperature <= 30)
-		{
-			return resources.getStringArray(
-				fr.amichalon.androidappdogeweather.R.array.between_20_and_30);
-		}
+			return AndroidUtil.getBetween20And30();
+		
 		// temperature > 30
 		else
-		{
-			return resources.getStringArray(
-					fr.amichalon.androidappdogeweather.R.array.superior_to_30);
-		}
+			return AndroidUtil.getSuperiorTo30();
 	}
 }

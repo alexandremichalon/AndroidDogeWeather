@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/front_doge_regular" />
+        android:src="@drawable/front_doge_regular"
+        tools:ignore="ContentDescription"/>
 
     <TextView
         android:id="@+id/TextTemperatureCelcius"
@@ -24,8 +25,7 @@
         android:layout_alignBottom="@+id/ImgFrontDoge"
         android:layout_alignLeft="@+id/ImgFrontDoge"
         android:ems="10"
-        android:gravity="center"
-        android:text="toto" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/TextTemperatureFahrenheit"
@@ -35,8 +35,7 @@
         android:layout_alignBottom="@+id/TextTemperatureCelcius"
         android:layout_alignRight="@+id/ImgFrontDoge"
         android:ems="10"
-        android:gravity="center"
-        android:text="toto" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/TextCity"
@@ -46,8 +45,7 @@
         android:layout_alignLeft="@+id/ImgFrontDoge"
         android:layout_alignRight="@+id/ImgFrontDoge"
         android:ems="10"
-        android:gravity="center"
-        android:text="toto" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/TextDescription"
@@ -57,7 +55,18 @@
         android:layout_alignLeft="@+id/ImgFrontDoge"
         android:layout_alignRight="@+id/ImgFrontDoge"
         android:ems="10"
-        android:gravity="center"
-        android:text="toto" />
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/ButtonUseLocation"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:alpha="0.85"
+        android:drawableLeft="@drawable/doge_geo"
+        android:text="@string/use_my_location"
+        android:textSize="12sp" />
 
 </RelativeLayout>
