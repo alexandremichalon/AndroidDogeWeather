@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="credits_bgcolor">#2E2E2E</color>
+    <color name="credits_txtcolor">#D1D1D1</color>
+    
+    
     <color name="such_color_1">#0066FF</color>
     <color name="such_color_2">#FF3399</color>
     <color name="such_color_3">#33CC33</color>

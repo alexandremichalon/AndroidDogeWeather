@@ -9,19 +9,23 @@ import fr.amichalon.androidappdogeweather.Business.DogeWeather;
 import fr.amichalon.androidappdogeweather.Business.WeatherUtil;
 import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
 import fr.amichalon.androidappdogeweather.Model.Weather;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ActivityDogeWeather extends Activity 
@@ -81,13 +85,29 @@ public class ActivityDogeWeather extends Activity
 
 
     
+    private Menu dogeMenu;     
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_doge_weather, menu);
+        dogeMenu = menu;
         return true;
+    }
+    
+    
+        
+    @Override
+    public boolean onOptionsItemSelected (MenuItem item)
+    {
+      if (item.getItemId() == R.id.action_settings)
+      {
+    	  setContentView(R.id.LayoutCredits);
+      }
+      
+      
+      return super.onOptionsItemSelected(item);
     }
     
     
@@ -199,6 +219,7 @@ public class ActivityDogeWeather extends Activity
 	    	// - random sentence
 	    	// - comic sans
 	    	// - random color
+	    	// - text size according to screen size (in resources)
 	    	// - random left padding (x position)
 	    	// - random top padding (y position)
 	    	TextView txtvw = new TextView(this);
@@ -206,6 +227,9 @@ public class ActivityDogeWeather extends Activity
 	    	txtvw.setText(rndText);
 	    	txtvw.setTypeface(comicSans);
 	    	txtvw.setTextColor(getRandomColor());
+	    	
+	    	float text_size = resources.getDimension(R.dimen.text_size);
+	    	txtvw.setTextSize(TypedValue.COMPLEX_UNIT_PX, text_size);
 	    	
 	    	
 	    	// old version, but could not calculate W and H in time on TextView
