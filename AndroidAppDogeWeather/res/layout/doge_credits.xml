@@ -3,7 +3,6 @@
     android:id="@+id/ScrollViewCredits"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/credits_bgcolor"
     android:padding="@dimen/activity_horizontal_margin" >
 
     <LinearLayout
@@ -12,29 +11,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:src="@android:drawable/arrow_up_float" 
-            android:contentDescription="@string/credits_close_button_cd"/>
-
-        <TextView
-            android:id="@+id/TextCreditsTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingBottom="@dimen/activity_horizontal_margin"
-            android:text="@string/credits_title"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/credits_txtcolor" />
-
         <TextView
             android:id="@+id/TextCredits1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_horizontal_margin"
             android:text="@string/credits_line1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/credits_txtcolor" />
@@ -67,7 +47,7 @@
             android:id="@+id/TextCreditsLicense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
             android:text="@string/credits_line_license"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/credits_txtcolor" />

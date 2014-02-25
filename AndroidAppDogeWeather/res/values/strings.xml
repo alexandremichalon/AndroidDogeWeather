@@ -18,6 +18,8 @@
     <string name="credits_line3">The source code is available on my <a href="https://github.com/alexandremichalon/AndroidDogeWeather">github</a></string>
     <string name="credits_line4">Many thanks to Adrien Debrie an Clément Danila for trolling the repository :)</string>
     <string name="credits_line_license">Dogeweather is licensed under the <a href="http://opensource.org/licenses/MIT">MIT license</a></string>
-    <string name="credits_close_button_cd">close</string>
+    
+    <!-- Dialogs -->
+    <string name="dialog_close">close</string>
     
 </resources>

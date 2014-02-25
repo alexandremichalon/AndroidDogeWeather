@@ -9,11 +9,11 @@ import fr.amichalon.androidappdogeweather.Business.DogeWeather;
 import fr.amichalon.androidappdogeweather.Business.WeatherUtil;
 import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
 import fr.amichalon.androidappdogeweather.Model.Weather;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -25,7 +25,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ActivityDogeWeather extends Activity 
@@ -84,15 +83,13 @@ public class ActivityDogeWeather extends Activity
     }
 
 
-    
-    private Menu dogeMenu;     
+         
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_doge_weather, menu);
-        dogeMenu = menu;
         return true;
     }
     
@@ -103,9 +100,9 @@ public class ActivityDogeWeather extends Activity
     {
       if (item.getItemId() == R.id.action_settings)
       {
-    	  setContentView(R.id.LayoutCredits);
+    	  DialogFragment dialog = new CreditsDialogFragment();
+    	  dialog.show(getFragmentManager(), "credits");
       }
-      
       
       return super.onOptionsItemSelected(item);
     }
@@ -148,7 +145,7 @@ public class ActivityDogeWeather extends Activity
     	txtvwTemperatureCelcius.setText(temperatureCelcius);
     	
     	
-    	// current temperature in farhenheit
+    	// current temperature in fahrenheit
     	String temperatureFahrenheit = (temperatureKnown)
     			? temperatureF + "°F"
 				: "";
@@ -445,8 +442,8 @@ public class ActivityDogeWeather extends Activity
 			{
 				publishProgress();
 				
-				// sleep 1s
-				try { Thread.sleep(1 * 1000); }
+				// sleep 2.5s
+				try { Thread.sleep(2500); }
 	    		catch(Exception exc) { }
 			}
 			
