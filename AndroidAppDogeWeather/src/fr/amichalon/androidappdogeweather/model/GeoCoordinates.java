@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.amichalon.androidappdogeweather.Model;
+package fr.amichalon.androidappdogeweather.model;
 
 /**
  * @author alexandre.michalon

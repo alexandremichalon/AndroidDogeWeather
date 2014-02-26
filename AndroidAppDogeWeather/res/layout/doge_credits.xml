@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ScrollViewCredits"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin" >
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context=".CreditsDialogFragment" >
 
     <LinearLayout
         android:id="@+id/LayoutCredits"
@@ -18,7 +20,7 @@
             android:text="@string/credits_line1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/credits_txtcolor" />
-        
+
         <TextView
             android:id="@+id/TextCredits2"
             android:layout_width="match_parent"
@@ -26,7 +28,7 @@
             android:text="@string/credits_line2"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/credits_txtcolor" />
-        
+
         <TextView
             android:id="@+id/TextCredits3"
             android:layout_width="match_parent"
@@ -34,7 +36,7 @@
             android:text="@string/credits_line3"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/credits_txtcolor" />
-        
+
         <TextView
             android:id="@+id/TextCredits4"
             android:layout_width="match_parent"
@@ -42,7 +44,7 @@
             android:text="@string/credits_line4"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/credits_txtcolor" />
-        
+
         <TextView
             android:id="@+id/TextCreditsLicense"
             android:layout_width="match_parent"
@@ -51,8 +53,6 @@
             android:text="@string/credits_line_license"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/credits_txtcolor" />
-
     </LinearLayout>
-    
 
 </ScrollView>

@@ -3,6 +3,20 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    
+    <!-- text size -->
     <dimen name="text_size">14sp</dimen>
+    
+    <!-- appwidget settings (4 cells on 2 cells) -->
+    <dimen name="appwidget_minwidth">294dp</dimen>
+    <dimen name="appwidget_minheight">146dp</dimen>
+    
+    <!-- appwidget image settings (2 cells on 2 cells) minus padding -->
+    <dimen name="appwidgetimg_maxwidth">136dp</dimen>
+    <dimen name="appwidgetimg_maxheight">136dp</dimen>
+    
+    <dimen name="appwidgettxt_maxwidth">144dp</dimen>
+    
+    <dimen name="appwidget_padding">5dp</dimen>
 
 </resources>

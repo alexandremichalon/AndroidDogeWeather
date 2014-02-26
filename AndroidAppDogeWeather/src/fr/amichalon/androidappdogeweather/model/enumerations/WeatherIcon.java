@@ -1,5 +1,5 @@
 
-package fr.amichalon.androidappdogeweather.Model.Enumerations;
+package fr.amichalon.androidappdogeweather.model.enumerations;
 
 import fr.amichalon.androidappdogeweather.R;
 

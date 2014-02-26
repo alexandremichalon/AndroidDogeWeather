@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LayoutAppWidget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent" >
+
+    <ImageView
+        android:id="@+id/ImgBackgroundAppWidget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/appwidget_padding"
+        android:scaleType="fitXY"
+        android:src="@drawable/back_01d"
+	    android:minHeight="@dimen/appwidget_minheight"
+	    android:minWidth="@dimen/appwidget_minwidth"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/ImgDogeAppWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:maxHeight="@dimen/appwidgetimg_maxheight"
+        android:maxWidth="@dimen/appwidgetimg_maxwidth"
+        android:src="@drawable/front_doge_regular"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/TextDescriptionAppWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:height="30dp"
+        android:textSize="16sp"
+        android:width="@dimen/appwidgettxt_maxwidth" />
+
+    <TextView
+        android:id="@+id/TextCityAppWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextDescriptionAppWidget"
+        android:height="30dp"
+        android:textSize="16sp"
+        android:width="@dimen/appwidgettxt_maxwidth" />
+
+    <TextView
+        android:id="@+id/TextTemperatureAppWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextCityAppWidget"
+        android:height="30dp"
+        android:textSize="16sp"
+        android:width="@dimen/appwidgettxt_maxwidth" />
+
+    <TextView
+        android:id="@+id/TextLexicalFieldAppWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/TextTemperatureAppWidget"
+        android:height="46dp"
+        android:lines="3"
+        android:textSize="12sp"
+        android:width="@dimen/appwidgettxt_maxwidth" />
+
+</RelativeLayout>

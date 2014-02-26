@@ -1,11 +1,11 @@
 /**
  * 
  */
-package fr.amichalon.androidappdogeweather.Business;
+package fr.amichalon.androidappdogeweather.business;
 
-import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
-import fr.amichalon.androidappdogeweather.Model.Weather;
-import fr.amichalon.androidappdogeweather.Model.Enumerations.WeatherIcon;
+import fr.amichalon.androidappdogeweather.model.GeoCoordinates;
+import fr.amichalon.androidappdogeweather.model.Weather;
+import fr.amichalon.androidappdogeweather.model.enumerations.WeatherIcon;
 
 /**
  * @author alexandre.michalon
@@ -62,7 +62,7 @@ public class DogeWeather
 			return weather.getDescription();
 		
 		else
-			return "wow doge weather";
+			return "doge weather";
 	}
 	
 	

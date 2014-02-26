@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.amichalon.androidappdogeweather.Business;
+package fr.amichalon.androidappdogeweather.business;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.util.Log;
-import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
-import fr.amichalon.androidappdogeweather.Model.Weather;
+import fr.amichalon.androidappdogeweather.model.GeoCoordinates;
+import fr.amichalon.androidappdogeweather.model.Weather;
 
 /**
  * @author alexandre.michalon

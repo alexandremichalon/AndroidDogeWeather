@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Random;
 
-import fr.amichalon.androidappdogeweather.Business.AndroidUtil;
-import fr.amichalon.androidappdogeweather.Business.DogeWeather;
-import fr.amichalon.androidappdogeweather.Business.WeatherUtil;
-import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
-import fr.amichalon.androidappdogeweather.Model.Weather;
-
+import fr.amichalon.androidappdogeweather.business.AndroidUtil;
+import fr.amichalon.androidappdogeweather.business.DogeWeather;
+import fr.amichalon.androidappdogeweather.business.WeatherUtil;
+import fr.amichalon.androidappdogeweather.model.GeoCoordinates;
+import fr.amichalon.androidappdogeweather.model.Weather;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;

@@ -1,10 +1,10 @@
 /**
  * 
  */
-package fr.amichalon.androidappdogeweather.Business;
+package fr.amichalon.androidappdogeweather.business;
 
 import fr.amichalon.androidappdogeweather.R;
-import fr.amichalon.androidappdogeweather.Model.GeoCoordinates;
+import fr.amichalon.androidappdogeweather.model.GeoCoordinates;
 import android.content.Context;
 import android.content.res.Resources;
 import android.location.Criteria;
