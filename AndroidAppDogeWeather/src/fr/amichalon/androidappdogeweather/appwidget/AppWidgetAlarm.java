@@ -17,7 +17,10 @@ import android.content.Intent;
 public class AppWidgetAlarm 
 {
 	private final int ALARM_ID = 0;
-    private int INTERVAL_MILLIS = 10000;
+    
+	public static final int ONE_HOUR = 60;
+	
+	public static final String INTERVAL_IN_MINUTES = "alarmIntervalInMinutes";
 
     private Context context;
 
@@ -28,17 +31,25 @@ public class AppWidgetAlarm
     }
 
 
+    
     public void startAlarm()
-    {    	
+    {
+    	startAlarm(ONE_HOUR);
+    }
+    
+    
+    
+    public void startAlarm(int intervalInMinutes)
+    {   
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MILLISECOND, INTERVAL_MILLIS);
+        calendar.add(Calendar.MINUTE, intervalInMinutes);
 
         Intent alarmIntent = new Intent(AppWidgetDoge.ACTION_AUTO_UPDATE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        // RTC does not wake the device up
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), INTERVAL_MILLIS, pendingIntent);
+        int intervalInMillis = intervalInMinutes * 60 * 1000;
+    	AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), intervalInMillis, pendingIntent);
     }
 
 

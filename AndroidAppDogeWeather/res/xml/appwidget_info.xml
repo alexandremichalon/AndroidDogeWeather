@@ -4,7 +4,6 @@
     android:minHeight="146dp"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/appwidget_doge_weather" 
-    android:configure="fr.amichalon.androidappdogeweather.appwidget.preferences.AppWidgetConfigurationActivity"
     android:widgetCategory="home_screen"
     android:resizeMode="none" >
     
