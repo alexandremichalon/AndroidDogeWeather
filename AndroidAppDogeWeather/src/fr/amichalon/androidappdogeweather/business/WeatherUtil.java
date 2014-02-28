@@ -65,7 +65,7 @@ public final class WeatherUtil
 		}
 		catch(IOException ioe)
 		{
-			Log.e("DogeWeather : WeatherUtil#getCurrentOWMDatas(double, double)", "Connection", ioe);
+			Log.i("DogeWeather : WeatherUtil#getCurrentOWMDatas(double, double)", "Connection", ioe);
 			throw ioe;
 		}
 		catch(Throwable t)

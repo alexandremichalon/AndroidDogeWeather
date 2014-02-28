@@ -41,6 +41,7 @@ public class AppWidgetAlarm
     
     public void startAlarm(int intervalInMinutes)
     {   
+    	
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, intervalInMinutes);
 

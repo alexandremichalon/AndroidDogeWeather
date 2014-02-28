@@ -18,6 +18,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.widget.RemoteViews;
 
 /**
@@ -27,8 +29,6 @@ import android.widget.RemoteViews;
 public class AppWidgetUpdateService extends IntentService 
 {
 	private static final String serviceName = "AppWidgetUpdateService";
-	
-	private static final int MAX_LEXICAL_FIELD_DISPLAYED = 5;
 	
 	public AppWidgetUpdateService() 
 	{
@@ -43,7 +43,6 @@ public class AppWidgetUpdateService extends IntentService
 		// get the AppWidgetManager
 		Context context						= getApplicationContext();
 		AppWidgetManager appWidgetManager	= AppWidgetManager.getInstance(context);
-		AndroidUtil.setContext(context);
 		
 		// get ids of the widget instances
 		ComponentName appWidget	= new ComponentName(context, AppWidgetDoge.class);
@@ -92,24 +91,25 @@ public class AppWidgetUpdateService extends IntentService
 	
 	private void ResetView(RemoteViews views, DogeWeather dWeather)
     {
-    	String temperatures = String.format(Locale.US,
-				"%d°C\t%d°F", 
+    	String description = String.format(Locale.US,
+				"%s : %s, %d°C, %d°F", 
+				dWeather.getCity(),
+				dWeather.getDescription(),
 				dWeather.getTemperatureCelcius(),
 				dWeather.getTemperatureFahrenheit());
 		
 		
-		String lfText = "";
-		for (int i = 0; (i < MAX_LEXICAL_FIELD_DISPLAYED); i++)
-		{
-			lfText += getRandomLexicalFieldText(dWeather) + " ! ";
-		}
-		
-		
+		views.setTextColor(R.id.TextDescriptionAppWidget, getRandomColor());
+		views.setTextColor(R.id.TextLFAppWidget1, getRandomColor());
+		views.setTextColor(R.id.TextLFAppWidget2, getRandomColor());
+		views.setTextColor(R.id.TextLFAppWidget3, getRandomColor());
+		views.setTextColor(R.id.TextLFAppWidget4, getRandomColor());
 
-		views.setTextViewText(R.id.TextDescriptionAppWidget, dWeather.getDescription());
-		views.setTextViewText(R.id.TextCityAppWidget, dWeather.getCity());
-		views.setTextViewText(R.id.TextTemperatureAppWidget, temperatures);
-		views.setTextViewText(R.id.TextLexicalFieldAppWidget, lfText);
+		views.setTextViewText(R.id.TextDescriptionAppWidget, description);
+		views.setTextViewText(R.id.TextLFAppWidget1, getRandomLexicalFieldText(dWeather));
+		views.setTextViewText(R.id.TextLFAppWidget2, getRandomLexicalFieldText(dWeather));
+		views.setTextViewText(R.id.TextLFAppWidget3, getRandomLexicalFieldText(dWeather));
+		views.setTextViewText(R.id.TextLFAppWidget4, getRandomLexicalFieldText(dWeather));
 		
 		views.setImageViewResource(R.id.ImgDogeAppWidget, dWeather.getFrontImageId());
 		views.setImageViewResource(R.id.ImgBackgroundAppWidget, dWeather.getBackImageId());
@@ -136,5 +136,23 @@ public class AppWidgetUpdateService extends IntentService
     	
     	// construct the sentence
     	return String.format(Locale.US, dogeSentence, weatherWord);
+    }
+    
+    
+    private int getRandomColor()
+    {
+    	// array of color references in the resource files
+    	TypedArray dogeColors = getResources().obtainTypedArray(R.array.doge_colors);
+		
+    	// get a random color reference in the array (0 <= rndIndex < length)
+    	// get the color from that color reference (default magenta)
+    	int length		= dogeColors.length();
+		int rndIndex	= (new Random()).nextInt(length);
+		int rndColorId	= dogeColors.getColor(rndIndex, Color.MAGENTA);
+		
+		// free the resources from the array
+		dogeColors.recycle();
+		
+		return rndColorId;
     }
 }

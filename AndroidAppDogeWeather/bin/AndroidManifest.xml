@@ -44,7 +44,6 @@
         
         <service 
             android:name="fr.amichalon.androidappdogeweather.appwidget.AppWidgetUpdateService">
-            
         </service>
         <!-- 
         <activity 

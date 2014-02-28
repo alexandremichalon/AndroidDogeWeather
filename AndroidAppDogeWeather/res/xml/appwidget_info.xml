@@ -2,7 +2,6 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="294dp"
     android:minHeight="146dp"
-    android:updatePeriodMillis="0"
     android:initialLayout="@layout/appwidget_doge_weather" 
     android:widgetCategory="home_screen"
     android:resizeMode="none" >
