@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:minHeight="@dimen/appwidget_minheight"
         android:minWidth="@dimen/appwidget_minwidth"
+        android:padding="@dimen/appwidget_padding"
         android:scaleType="fitXY"
         android:src="@drawable/back_01d"
         tools:ignore="ContentDescription" />
@@ -34,17 +35,13 @@
         android:layout_alignBottom="@id/ImgBackgroundAppWidget"
         android:layout_alignLeft="@id/ImgBackgroundAppWidget"
         android:alpha="0.75"
-        android:background="@android:color/background_dark"
-        android:paddingLeft="@dimen/appwidget_padding"
-        android:paddingRight="@dimen/appwidget_padding"
-        android:paddingTop="@dimen/appwidget_padding" >
+        android:background="@android:color/background_dark" >
 
         <TextView
             android:id="@+id/TextDescriptionAppWidget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:height="30dp"
-            android:paddingLeft="@dimen/appwidget_padding"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -53,8 +50,8 @@
         android:id="@+id/TextLFAppWidget1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/ImgDogeAppWidget"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/ImgDogeAppWidget"
         android:textSize="12sp" />
 
     <TextView
@@ -63,7 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/ImgDogeAppWidget"
         android:layout_alignTop="@+id/ImgDogeAppWidget"
-        android:layout_marginTop="@dimen/appwidget_padding"
         android:textSize="12sp" />
 
     <TextView
@@ -73,20 +69,10 @@
         android:layout_above="@+id/LayoutBottomAppWidget"
         android:layout_alignRight="@id/ImgBackgroundAppWidget"
         android:layout_marginBottom="@dimen/appwidget_padding"
-        android:layout_marginRight="@dimen/appwidget_padding"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/TextLFAppWidget4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/ImgBackgroundAppWidget"
-        android:layout_below="@+id/TextLFAppWidget2"
-        android:layout_marginLeft="@dimen/appwidget_padding"
-        android:textSize="12sp" />
-    
-    <TextView
-        android:id="@+id/TextLFAppWidget5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/ImgBackgroundAppWidget"
