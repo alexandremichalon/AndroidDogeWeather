@@ -26,6 +26,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <receiver
+            android:name="fr.amichalon.androidappdogeweather.appwidget.AppWidgetDoge"
+            android:label="@string/app_name"
+            android:logo="@drawable/ic_launcher" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_ENABLED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_DISABLED"/>
+                <action android:name="fr.amichalon.androidappdogeweather.AUTO_UPDATE" />
+            </intent-filter>
+            <meta-data 
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_info" />
+        </receiver>
+        
+        <service 
+            android:name="fr.amichalon.androidappdogeweather.appwidget.AppWidgetUpdateService">
+        </service>
+        <!-- 
+        <activity 
+            android:name="fr.amichalon.androidappdogeweather.appwidget.preferences.AppWidgetConfigurationActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>-->
     </application>
 
 </manifest>
