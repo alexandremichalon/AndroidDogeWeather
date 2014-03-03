@@ -104,16 +104,19 @@ public class AppWidgetUpdateService extends IntentService
 		views.setTextColor(R.id.TextLFAppWidget2, getRandomColor());
 		views.setTextColor(R.id.TextLFAppWidget3, getRandomColor());
 		views.setTextColor(R.id.TextLFAppWidget4, getRandomColor());
+		views.setTextColor(R.id.TextLFAppWidget5, getRandomColor());
 
 		views.setTextViewText(R.id.TextDescriptionAppWidget, description);
 		views.setTextViewText(R.id.TextLFAppWidget1, getRandomLexicalFieldText(dWeather));
 		views.setTextViewText(R.id.TextLFAppWidget2, getRandomLexicalFieldText(dWeather));
 		views.setTextViewText(R.id.TextLFAppWidget3, getRandomLexicalFieldText(dWeather));
 		views.setTextViewText(R.id.TextLFAppWidget4, getRandomLexicalFieldText(dWeather));
+		views.setTextViewText(R.id.TextLFAppWidget5, getRandomLexicalFieldText(dWeather));
 		
 		views.setImageViewResource(R.id.ImgDogeAppWidget, dWeather.getFrontImageId());
 		views.setImageViewResource(R.id.ImgBackgroundAppWidget, dWeather.getBackImageId());
     }
+
     
     
     
