@@ -51,25 +51,25 @@
 
     </LinearLayout>
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/ImgDogeAppWidget"
         android:layout_centerVertical="true"
-        android:textSize="12sp" />
+        tools:ignore="ContentDescription" />
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/ImgDogeAppWidget"
         android:layout_alignTop="@+id/ImgDogeAppWidget"
+        android:layout_centerHorizontal="true"
         android:layout_marginRight="@dimen/appwidget_padding"
         android:layout_marginTop="@dimen/appwidget_padding"
-        android:textSize="12sp" />
+        tools:ignore="ContentDescription" />
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,9 +77,9 @@
         android:layout_alignRight="@id/ImgBackgroundAppWidget"
         android:layout_marginBottom="@dimen/appwidget_padding"
         android:layout_marginRight="@dimen/appwidget_padding"
-        android:textSize="12sp" />
+        tools:ignore="ContentDescription" />
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -87,14 +87,14 @@
         android:layout_below="@+id/TextLFAppWidget2"
         android:layout_marginLeft="@dimen/appwidget_padding"
         android:layout_marginTop="@dimen/appwidget_padding"
-        android:textSize="12sp" />
+        tools:ignore="ContentDescription" />
     
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/TextLFAppWidget1"
         android:layout_alignRight="@id/ImgDogeAppWidget"
-        android:textSize="12sp" />
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

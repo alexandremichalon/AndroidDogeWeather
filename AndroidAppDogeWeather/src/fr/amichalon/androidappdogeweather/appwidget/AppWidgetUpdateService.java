@@ -19,7 +19,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.widget.RemoteViews;
 
 /**
@@ -56,12 +61,10 @@ public class AppWidgetUpdateService extends IntentService
     		GeoCoordinates coord = AndroidUtil.getPhoneCoordinates();
 			Weather weather = WeatherUtil.getCurrentWeather(coord.getLatitude(), coord.getLongitude());
 			
-			dWeather = new DogeWeather(weather);
+			if(weather != null)
+				dWeather = new DogeWeather(weather);
 		}
-		catch (Throwable t)
-		{
-			dWeather = new DogeWeather();
-		}
+		catch (Throwable t) { }
 		
 		
 		// update all instances
@@ -71,8 +74,11 @@ public class AppWidgetUpdateService extends IntentService
     		int appWidgetId = allWidgetIds[i];
 			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_doge_weather);
 			
+			
 			// reset the appwidget view
-			ResetView(views, dWeather);
+			if(dWeather != null)
+				ResetView(views, dWeather);
+			
 			
 			// set the intent when the user click the appwidget
 	    	Intent clickImageIntent = new Intent(context, AppWidgetDoge.class);
@@ -98,24 +104,55 @@ public class AppWidgetUpdateService extends IntentService
 				dWeather.getTemperatureCelcius(),
 				dWeather.getTemperatureFahrenheit());
 		
-		
 		views.setTextColor(R.id.TextDescriptionAppWidget, getRandomColor());
-		views.setTextColor(R.id.TextLFAppWidget1, getRandomColor());
-		views.setTextColor(R.id.TextLFAppWidget2, getRandomColor());
-		views.setTextColor(R.id.TextLFAppWidget3, getRandomColor());
-		views.setTextColor(R.id.TextLFAppWidget4, getRandomColor());
-		views.setTextColor(R.id.TextLFAppWidget5, getRandomColor());
-
 		views.setTextViewText(R.id.TextDescriptionAppWidget, description);
-		views.setTextViewText(R.id.TextLFAppWidget1, getRandomLexicalFieldText(dWeather));
-		views.setTextViewText(R.id.TextLFAppWidget2, getRandomLexicalFieldText(dWeather));
-		views.setTextViewText(R.id.TextLFAppWidget3, getRandomLexicalFieldText(dWeather));
-		views.setTextViewText(R.id.TextLFAppWidget4, getRandomLexicalFieldText(dWeather));
-		views.setTextViewText(R.id.TextLFAppWidget5, getRandomLexicalFieldText(dWeather));
+		
+		int textSizeInDp = 12;
+		Bitmap bmp1 = buildBitmapText(getRandomLexicalFieldText(dWeather), getRandomColor(), textSizeInDp);
+		Bitmap bmp2 = buildBitmapText(getRandomLexicalFieldText(dWeather), getRandomColor(), textSizeInDp);
+		Bitmap bmp3 = buildBitmapText(getRandomLexicalFieldText(dWeather), getRandomColor(), textSizeInDp);
+		Bitmap bmp4 = buildBitmapText(getRandomLexicalFieldText(dWeather), getRandomColor(), textSizeInDp);
+		Bitmap bmp5 = buildBitmapText(getRandomLexicalFieldText(dWeather), getRandomColor(), textSizeInDp);
+		
+		views.setImageViewBitmap(R.id.TextLFAppWidget1, bmp1);
+		views.setImageViewBitmap(R.id.TextLFAppWidget2, bmp2);
+		views.setImageViewBitmap(R.id.TextLFAppWidget3, bmp3);
+		views.setImageViewBitmap(R.id.TextLFAppWidget4, bmp4);
+		views.setImageViewBitmap(R.id.TextLFAppWidget5, bmp5);
 		
 		views.setImageViewResource(R.id.ImgDogeAppWidget, dWeather.getFrontImageId());
 		views.setImageViewResource(R.id.ImgBackgroundAppWidget, dWeather.getBackImageId());
     }
+	
+	
+	
+	
+	private Bitmap buildBitmapText(String text, int textColor, int textSize)     
+	{
+		// such magic numbers ! very empiric ! wow !
+		final double density = getResources().getDisplayMetrics().density;
+		final double textWidth = text.length() * textSize * density;
+		final int bmpWidth = (int) (textWidth * 0.6);
+		final int bmpHeight = (int) (textSize * 5);
+		final int textPadding = (int) (bmpWidth * 0.5);
+		final int textHeight = (int) (textSize * density);
+		
+		// build a bitmap and draw a text with comic sans font on it
+		Bitmap myBitmap = Bitmap.createBitmap(bmpWidth, bmpHeight, Bitmap.Config.ARGB_8888);
+		Canvas myCanvas = new Canvas(myBitmap);
+		Paint paint = new Paint();
+		Typeface comicsans = Typeface.createFromAsset(this.getAssets(),"fonts/comicsans.ttf");
+		paint.setAntiAlias(true);
+		paint.setSubpixelText(true);
+		paint.setTypeface(comicsans);
+		paint.setStyle(Paint.Style.FILL);
+		paint.setColor(textColor);
+		paint.setTextSize(textHeight);
+		paint.setTextAlign(Align.CENTER);
+		
+		myCanvas.drawText(text, textPadding, textHeight, paint);
+		return myBitmap;
+	}
 
     
     

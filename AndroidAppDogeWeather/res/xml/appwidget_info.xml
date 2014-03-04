@@ -4,7 +4,8 @@
     android:minHeight="146dp"
     android:initialLayout="@layout/appwidget_doge_weather" 
     android:widgetCategory="home_screen"
-    android:resizeMode="none" >
+    android:resizeMode="none"
+    android:previewImage="@drawable/widget_screencap" >
     
 
 </appwidget-provider>
