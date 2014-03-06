@@ -58,8 +58,10 @@ public class AppWidgetUpdateService extends IntentService
 	    DogeWeather dWeather = null;
 		try
 		{
-    		GeoCoordinates coord = AndroidUtil.getPhoneCoordinates();
-			Weather weather = WeatherUtil.getCurrentWeather(coord.getLatitude(), coord.getLongitude());
+    		GeoCoordinates coord	= AndroidUtil.getPhoneCoordinates();
+			Weather weather			= WeatherUtil.getCurrentWeather(
+					coord.getLatitude(), 
+					coord.getLongitude());
 			
 			if(weather != null)
 				dWeather = new DogeWeather(weather);
@@ -72,7 +74,9 @@ public class AppWidgetUpdateService extends IntentService
     	for (int i = 0; i < length; i++)
     	{
     		int appWidgetId = allWidgetIds[i];
-			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_doge_weather);
+			RemoteViews views = new RemoteViews(
+					context.getPackageName(), 
+					R.layout.appwidget_doge_weather);
 			
 			
 			// reset the appwidget view
@@ -130,18 +134,19 @@ public class AppWidgetUpdateService extends IntentService
 	private Bitmap buildBitmapText(String text, int textColor, int textSize)     
 	{
 		// such magic numbers ! very empiric ! wow !
-		final double density = getResources().getDisplayMetrics().density;
-		final double textWidth = text.length() * textSize * density;
-		final int bmpWidth = (int) (textWidth * 0.6);
-		final int bmpHeight = (int) (textSize * 5);
-		final int textPadding = (int) (bmpWidth * 0.5);
-		final int textHeight = (int) (textSize * density);
+		final double density	= getResources().getDisplayMetrics().density;
+		final double textWidth	= text.length() * textSize * density;
+		final int bmpWidth		= (int) (textWidth * 0.6);
+		final int bmpHeight		= (int) (textSize * 5);
+		final int textPadding	= (int) (bmpWidth * 0.5);
+		final int textHeight	= (int) (textSize * density);
 		
 		// build a bitmap and draw a text with comic sans font on it
-		Bitmap myBitmap = Bitmap.createBitmap(bmpWidth, bmpHeight, Bitmap.Config.ARGB_8888);
-		Canvas myCanvas = new Canvas(myBitmap);
-		Paint paint = new Paint();
-		Typeface comicsans = Typeface.createFromAsset(this.getAssets(),"fonts/comicsans.ttf");
+		Bitmap myBitmap		= Bitmap.createBitmap(bmpWidth, bmpHeight, Bitmap.Config.ARGB_8888);
+		Canvas myCanvas		= new Canvas(myBitmap);
+		Paint paint			= new Paint();
+		Typeface comicsans	= Typeface.createFromAsset(this.getAssets(),"fonts/comicsans.ttf");
+		
 		paint.setAntiAlias(true);
 		paint.setSubpixelText(true);
 		paint.setTypeface(comicsans);

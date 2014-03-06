@@ -19,8 +19,6 @@ public class AppWidgetAlarm
 	private final int ALARM_ID = 0;
     
 	public static final int ONE_HOUR = 60;
-	
-	public static final String INTERVAL_IN_MINUTES = "alarmIntervalInMinutes";
 
     private Context context;
 

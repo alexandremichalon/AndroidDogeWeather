@@ -52,7 +52,8 @@ public class AppWidgetDoge extends AppWidgetProvider
 
     @Override
     public void onEnabled(Context context)
-    {    	
+    {    
+    	// set the context to access the resources in the widget
     	AndroidUtil.setContext(context);
     	
         // start alarm
