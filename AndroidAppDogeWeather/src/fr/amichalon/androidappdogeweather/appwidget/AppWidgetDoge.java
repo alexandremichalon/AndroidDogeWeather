@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package fr.amichalon.androidappdogeweather.appwidget;
 
 import fr.amichalon.androidappdogeweather.business.AndroidUtil;
@@ -10,13 +8,21 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
+ * The AppWidgetProvider that contains the Doge Weather Widget intelligence.
+ * 
  * @author alexandre.michalon
- *
  */
 public class AppWidgetDoge extends AppWidgetProvider 
 {
+	
+	/**
+	 * The designation of the Intent sent by the alarm every hour. It is
+	 * allowed in the Manifest file.
+	 */
 	public static final String ACTION_AUTO_UPDATE = "fr.amichalon.androidappdogeweather.AUTO_UPDATE";
-
+	
+	
+	
 	
 	
     @Override
@@ -24,7 +30,9 @@ public class AppWidgetDoge extends AppWidgetProvider
     {
         super.onReceive(context, intent);
 
-        if(ACTION_AUTO_UPDATE.equals(intent.getAction()))
+        // every time an intent is received, we filter
+        // we only react to our declared intent, i.e. alarm intent.
+        if (ACTION_AUTO_UPDATE.equals(intent.getAction()))
         {
         	// intent that start the views update
         	Intent updateViewsIntent = new Intent(context, AppWidgetUpdateService.class);
@@ -32,8 +40,6 @@ public class AppWidgetDoge extends AppWidgetProvider
         }
     }
 
-    
-    
     
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
@@ -47,12 +53,12 @@ public class AppWidgetDoge extends AppWidgetProvider
     }
     
     
-    
-    
-
     @Override
     public void onEnabled(Context context)
     {    
+    	// when the first widget is added on the phone,
+    	// set the Context and start the alarm
+    	
     	// set the context to access the resources in the widget
     	AndroidUtil.setContext(context);
     	
@@ -67,7 +73,8 @@ public class AppWidgetDoge extends AppWidgetProvider
     @Override
     public void onDisabled(Context context)
     {
-        // stop alarm
+        // when the last widget is removed on the phone, 
+    	// stop alarm
         AppWidgetAlarm appWidgetAlarm = new AppWidgetAlarm(context.getApplicationContext());
         appWidgetAlarm.stopAlarm();
     }

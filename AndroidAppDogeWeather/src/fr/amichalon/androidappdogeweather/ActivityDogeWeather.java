@@ -26,18 +26,31 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * The class that contains the intelligence of the Doge Weather application.
+ * 
+ * @author alexandre.michalon
+ */
 public class ActivityDogeWeather extends Activity 
 {
 	
+	/**
+	 * The path to the comic sans font in the assets folder.
+	 */
 	private static final String COMIC_SANS_FONT_FILE = "fonts/comicsans.ttf";
+	
+	
+	/**
+	 * An object used to synchronize updates on the activity view.
+	 */
+	private Object drawLock = new Object();
+	
 	
 	private Typeface comicSans;
 	
 	private DogeWeather dogeWeather;
 
 	private GeoCoordinates geoCoordinates;
-	
-	private Object drawLock = new Object();
 	
 	
     @Override
@@ -82,8 +95,6 @@ public class ActivityDogeWeather extends Activity
     }
 
 
-         
-    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
@@ -92,23 +103,113 @@ public class ActivityDogeWeather extends Activity
         return true;
     }
     
-    
-        
+       
     @Override
     public boolean onOptionsItemSelected (MenuItem item)
     {
-      if (item.getItemId() == R.id.action_settings)
-      {
-    	  DialogFragment dialog = new CreditsDialogFragment();
-    	  dialog.show(getFragmentManager(), "credits");
-      }
-      
-      return super.onOptionsItemSelected(item);
+    	// if the action bar credit button is pressed, then show the credits
+    	if (item.getItemId() == R.id.action_settings)
+    	{
+    		DialogFragment dialog = new CreditsDialogFragment();
+    		dialog.show(getFragmentManager(), "credits");
+    	}
+
+    	return super.onOptionsItemSelected(item);
     }
     
     
+    /**
+     * A click listener to retrieve the current weather and update
+     * the view whenever the "use my location" button is clicked.
+     */
+    private View.OnClickListener getUserLocation = new View.OnClickListener()
+    {
+		@Override
+		public void onClick(View v) 
+		{
+			synchronized (drawLock)
+			{
+				btnUseLocation.setText(R.string.waiting_location);
+			}
+			
+			locationState = ButtonLocationState.WAITING;
+			
+			geoCoordinates = AndroidUtil.getPhoneCoordinates();
+			
+			// start the job that get the weather info
+	        // from OpenWeatherMap (once)
+	        DogeWeatherTask weatherHttpRequest = new DogeWeatherTask();
+	        weatherHttpRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		}
+	};
     
     
+
+    
+    
+    /* 
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     * Part dedicated to the filling of the layout
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     */
+    
+    
+    /**
+     * The resources of the application.
+     */
+    private Resources resources;
+    
+    
+    /**
+     * The layout of the application.
+     */
+    private RelativeLayout rlytDogeWeather;
+    
+    
+    /**
+     * The front image, an image of doge depending of the current weather.
+     */
+    private ImageView imgvwFront;
+    
+    
+    /**
+     * The "use my location" button.
+     */
+    private Button btnUseLocation;
+    
+    
+    /**
+     * The description textview.
+     */
+    private TextView txtvwDescription;
+    
+    
+    /**
+     * The city name textview.
+     */
+    private TextView txtvwCity;
+    
+    
+    /**
+     * The temperature in fahrenheit textview.
+     */
+    private TextView txtvwTemperatureFahrenheit;
+    
+    
+    /**
+     * The temperature in celcius textview.
+     */
+    private TextView txtvwTemperatureCelcius;
+    
+    
+    /**
+     * Fill the textviews with informations about the current weather.
+     * 
+     * @param weather
+     * 		The current weather.
+     */
     private void fillWeatherInfos(DogeWeather weather)
     {
     	// background image
@@ -152,50 +253,107 @@ public class ActivityDogeWeather extends Activity
     }
     
     
-    
-    
-    private int getRandomColor()
+    /**
+     * Set the initial properties of all images and textviews of the application.
+     */
+    private void initView()
     {
-    	// array of color references in the resource files
-    	TypedArray dogeColors = resources.obtainTypedArray(R.array.doge_colors);
-		
-    	// get a random color reference in the array (0 <= rndIndex < length)
-    	// get the color from that color reference (default magenta)
-    	int length		= dogeColors.length();
-		int rndIndex	= (new Random()).nextInt(length);
-		int rndColorId	= dogeColors.getColor(rndIndex, Color.MAGENTA);
-		
-		// free the resources from the array
-		dogeColors.recycle();
-		
-		return rndColorId;
-    }
-    
-    
-    
-    private String getRandomPopupText(DogeWeather weather)
-    {
-    	Random random = new Random();
+    	// initialize resources and font
+    	resources = getResources();
+    	comicSans = Typeface.createFromAsset(getAssets(), COMIC_SANS_FONT_FILE);
     	
-    	// get a random word in the current weather lexical field ("cloud", "frosty", ...)
-    	String[] lexicalField	= weather.getLexicalField();
-    	int lfLength			= lexicalField.length;
-    	int rndLfIndex			= random.nextInt(lfLength);
-    	String weatherWord		= lexicalField[rndLfIndex];
+    	// get the app main layout and static textviews
+    	// initialize textviews with comic sans font and random text colors
+    	rlytDogeWeather				= (RelativeLayout) findViewById(R.id.LayoutDoge);
+    	imgvwFront					= (ImageView) findViewById(R.id.ImgFrontDoge);
+    	btnUseLocation				= (Button) findViewById(R.id.ButtonUseLocation);
+    	txtvwDescription			= (TextView) findViewById(R.id.TextDescription);
+    	txtvwCity					= (TextView) findViewById(R.id.TextCity);
+    	txtvwTemperatureFahrenheit	= (TextView) findViewById(R.id.TextTemperatureFahrenheit);
+    	txtvwTemperatureCelcius		= (TextView) findViewById(R.id.TextTemperatureCelcius);
     	
-    	// get a random word in the doge lexical field ("such %s", "very %s", ...)
-    	String[] dogeSentences	= resources.getStringArray(R.array.doge_sentences);
-    	int dogeLength			= dogeSentences.length;
-    	int rndDogeIndex		= random.nextInt(dogeLength);
-    	String dogeSentence		= dogeSentences[rndDogeIndex];
+    	btnUseLocation				.setTypeface(comicSans);
+    	txtvwDescription			.setTypeface(comicSans);
+    	txtvwCity					.setTypeface(comicSans);
+    	txtvwTemperatureCelcius		.setTypeface(comicSans);
+    	txtvwTemperatureFahrenheit	.setTypeface(comicSans);
     	
-    	// construct the sentence
-    	return String.format(Locale.US, dogeSentence, weatherWord);
+    	btnUseLocation				.setTextColor(getRandomColor());
+    	txtvwDescription			.setTextColor(getRandomColor());
+    	txtvwCity					.setTextColor(getRandomColor());
+    	int temperatureColor = getRandomColor();
+    	txtvwTemperatureCelcius		.setTextColor(temperatureColor);
+    	txtvwTemperatureFahrenheit	.setTextColor(temperatureColor);
+    	
+    	// initialize the popup array
+    	resetPopups();
     }
     
     
     
     
+    
+    /* 
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     * Part dedicated to the generation and reinitialization of random popups
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     */
+    
+    
+    /**
+     * An array to keep a trace of random popups generated.
+     */
+    private TextView[] txtvwPopups;
+    
+    
+    /**
+     * The index of the current oldest popup generated.
+     */
+    private int popupsRotationIndex;
+    
+    
+    /**
+     * The maximum number of popups on screen.
+     */
+    private static final int POPUPS_MAXIMUM_ROTATION = 4;
+    
+    
+    /**
+     * Delete all random popups on screen.
+     */
+    private void resetPopups()
+    {
+    	// if popups exist on screen, we need to remove them
+    	if(txtvwPopups != null)
+    	{
+    		int length = txtvwPopups.length;
+    		
+    		// remove each popup from the layout
+    		for(int i = 0; i < length; i++)
+    		{
+    			TextView txtvw = txtvwPopups[i];
+    			
+    			if(txtvw != null)
+    				rlytDogeWeather.removeView(txtvw);
+    		}
+    	}
+    		
+    	// make a new textview array and reset the index
+    	txtvwPopups 			= new TextView[POPUPS_MAXIMUM_ROTATION];
+    	popupsRotationIndex 	= 0;
+    }
+    
+    
+    /**
+     * Generate a textview with a random text and a random color, at a random
+     * position of the screen (by setting padding). Replace the oldest textview
+     * with the one newly created.
+     * 
+     * @param weather
+     * 		The current weather. It is used to generate the random text.
+     */
     private void makeRandomPopup(DogeWeather weather)
     {
     	int screenWidth		= rlytDogeWeather.getWidth();
@@ -263,103 +421,77 @@ public class ActivityDogeWeather extends Activity
     }
     
     
-    
-    private void resetPopups()
+    /**
+	 * Build a random sentence from the lexical field associated with a weather.
+	 * 
+	 * @param weather
+	 * 		The current weather.
+	 * 
+	 * @return
+	 * 		A String with the format "such cloud" or "many rain"
+	 */
+    private String getRandomPopupText(DogeWeather weather)
     {
-    	// if popups exist on screen, we need to remove them
-    	if(txtvwPopups != null)
-    	{
-    		int length = txtvwPopups.length;
-    		
-    		// remove each popup from the layout
-    		for(int i = 0; i < length; i++)
-    		{
-    			TextView txtvw = txtvwPopups[i];
-    			
-    			if(txtvw != null)
-    				rlytDogeWeather.removeView(txtvw);
-    		}
-    	}
-    		
-    	// make a new textview array and reset the index
-    	txtvwPopups 			= new TextView[POPUPS_MAXIMUM_ROTATION];
-    	popupsRotationIndex 	= 0;
+    	Random random = new Random();
+    	
+    	// get a random word in the current weather lexical field ("cloud", "frosty", ...)
+    	String[] lexicalField	= weather.getLexicalField();
+    	int lfLength			= lexicalField.length;
+    	int rndLfIndex			= random.nextInt(lfLength);
+    	String weatherWord		= lexicalField[rndLfIndex];
+    	
+    	// get a random word in the doge lexical field ("such %s", "very %s", ...)
+    	String[] dogeSentences	= resources.getStringArray(R.array.doge_sentences);
+    	int dogeLength			= dogeSentences.length;
+    	int rndDogeIndex		= random.nextInt(dogeLength);
+    	String dogeSentence		= dogeSentences[rndDogeIndex];
+    	
+    	// construct the sentence
+    	return String.format(Locale.US, dogeSentence, weatherWord);
+    }
+    
+    
+    /**
+     * Get a color at random in all the colors declared for doge in the 
+     * resources.
+     * 
+     * @return
+     * 		An integer that represent a color in Android.
+     */
+    private int getRandomColor()
+    {
+    	// array of color references in the resource files
+    	TypedArray dogeColors = resources.obtainTypedArray(R.array.doge_colors);
+		
+    	// get a random color reference in the array (0 <= rndIndex < length)
+    	// get the color from that color reference (default magenta)
+    	int length		= dogeColors.length();
+		int rndIndex	= (new Random()).nextInt(length);
+		int rndColorId	= dogeColors.getColor(rndIndex, Color.MAGENTA);
+		
+		// free the resources from the array
+		dogeColors.recycle();
+		
+		return rndColorId;
     }
     
     
     
     
-    private void initView()
-    {
-    	// initialize resources and font
-    	resources = getResources();
-    	comicSans = Typeface.createFromAsset(getAssets(), COMIC_SANS_FONT_FILE);
-    	
-    	// get the app main layout and static textviews
-    	// initialize textviews with comic sans font and random text colors
-    	rlytDogeWeather				= (RelativeLayout) findViewById(R.id.LayoutDoge);
-    	imgvwFront					= (ImageView) findViewById(R.id.ImgFrontDoge);
-    	btnUseLocation				= (Button) findViewById(R.id.ButtonUseLocation);
-    	txtvwDescription			= (TextView) findViewById(R.id.TextDescription);
-    	txtvwCity					= (TextView) findViewById(R.id.TextCity);
-    	txtvwTemperatureFahrenheit	= (TextView) findViewById(R.id.TextTemperatureFahrenheit);
-    	txtvwTemperatureCelcius		= (TextView) findViewById(R.id.TextTemperatureCelcius);
-    	
-    	btnUseLocation				.setTypeface(comicSans);
-    	txtvwDescription			.setTypeface(comicSans);
-    	txtvwCity					.setTypeface(comicSans);
-    	txtvwTemperatureCelcius		.setTypeface(comicSans);
-    	txtvwTemperatureFahrenheit	.setTypeface(comicSans);
-    	
-    	btnUseLocation				.setTextColor(getRandomColor());
-    	txtvwDescription			.setTextColor(getRandomColor());
-    	txtvwCity					.setTextColor(getRandomColor());
-    	int temperatureColor = getRandomColor();
-    	txtvwTemperatureCelcius		.setTextColor(temperatureColor);
-    	txtvwTemperatureFahrenheit	.setTextColor(temperatureColor);
-    	
-    	// initialize the popup array
-    	resetPopups();
-    }
     
-    private Resources resources;
-    
-    private RelativeLayout rlytDogeWeather;
-    private ImageView imgvwFront;
-    private Button btnUseLocation;
-    private TextView txtvwDescription;
-    private TextView txtvwCity;
-    private TextView txtvwTemperatureFahrenheit;
-    private TextView txtvwTemperatureCelcius;
-    
-    private TextView[] txtvwPopups;
-    private int popupsRotationIndex;
-    private static final int POPUPS_MAXIMUM_ROTATION = 4;
+    /* 
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     * Part dedicated to the task that retrieve the current weather
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     */
     
     
-    private View.OnClickListener getUserLocation = new View.OnClickListener()
-    {
-		@Override
-		public void onClick(View v) 
-		{
-			synchronized (drawLock)
-			{
-				btnUseLocation.setText(R.string.waiting_location);
-			}
-			
-			locationState = ButtonLocationState.WAITING;
-			
-			geoCoordinates = AndroidUtil.getPhoneCoordinates();
-			
-			// start the job that get the weather info
-	        // from OpenWeatherMap (once)
-	        DogeWeatherTask weatherHttpRequest = new DogeWeatherTask();
-	        weatherHttpRequest.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		}
-	};
-    
-    
-    
+    /**
+     * 
+     * 
+     */
     private class DogeWeatherTask extends AsyncTask<Void, Void, Weather> 
     {
     	@Override
@@ -429,8 +561,25 @@ public class ActivityDogeWeather extends Activity
     
     
     
+    
+    /* 
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     * Part dedicated to the task that retrieve the current weather
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     */
+    
+    
+    /**
+     * 
+     */
     private boolean runPopupGenerator;
     
+    
+    /**
+     * 
+     */
     private class LexicalFieldPopupGeneratorTask extends AsyncTask<Void, Void, Void>
     {
 
@@ -464,6 +613,25 @@ public class ActivityDogeWeather extends Activity
     
     
     
+    
+    /* 
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     * Part dedicated to the state of the "use my location" button
+     * ------------------------------------------------------------------------
+     * ------------------------------------------------------------------------
+     */
+    
+    
+    /**
+     * 
+     */
+    private ButtonLocationState locationState;
+    
+    
+    /**
+     * 
+     */
     private enum ButtonLocationState
     {
     	DEFAULT,
@@ -473,8 +641,12 @@ public class ActivityDogeWeather extends Activity
     	LOCATED
     }
     
-    private ButtonLocationState locationState;
     
+    /**
+     * 
+     * 
+     * @param locationState
+     */
     private void switchLocationState(ButtonLocationState locationState)
     {
     	if (locationState == ButtonLocationState.WAITING
