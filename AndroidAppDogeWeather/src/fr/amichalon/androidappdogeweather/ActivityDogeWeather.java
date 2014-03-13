@@ -46,10 +46,21 @@ public class ActivityDogeWeather extends Activity
 	private Object drawLock = new Object();
 	
 	
+	/**
+	 * The comic sans font.
+	 */
 	private Typeface comicSans;
 	
+	
+	/**
+	 * The current weather.
+	 */
 	private DogeWeather dogeWeather;
 
+	
+	/**
+	 * The current coordinates.
+	 */
 	private GeoCoordinates geoCoordinates;
 	
 	
@@ -489,18 +500,24 @@ public class ActivityDogeWeather extends Activity
     
     
     /**
-     * 
-     * 
+     * Internal AsyncTask getting the weather by requesting OpenWeatherMap
+     * and updating the view accordingly. 
      */
     private class DogeWeatherTask extends AsyncTask<Void, Void, Weather> 
     {
+    	
     	@Override
     	protected Weather doInBackground(Void... params) 
     	{
     		Weather weather = null;
     		
+    		// we don't get the weather if no network is available
     		if (AndroidUtil.isNetworkAvailable())
     		{
+    			// if geolocation is off, we get Paris coordinates
+    			// we get the current coordinates otherwise
+    			// we also update the state of the "use my location" button
+    			// if it has been pressed
     			try
     			{
 	    			weather = (geoCoordinates == null)
@@ -528,6 +545,8 @@ public class ActivityDogeWeather extends Activity
     	{
     		synchronized(drawLock) 
 			{
+    			// update the view only if a new weather has been retrieved
+    			// by the task.
 	    		if (weather != null)
 	    		{
 					initView();
@@ -536,6 +555,8 @@ public class ActivityDogeWeather extends Activity
 	    			fillWeatherInfos(dogeWeather);
 				}
     		
+	    		// update the text on the "use my location" button according to
+	    		// its state
 				switch (locationState)
 				{
 					case LOCATED:
@@ -565,20 +586,22 @@ public class ActivityDogeWeather extends Activity
     /* 
      * ------------------------------------------------------------------------
      * ------------------------------------------------------------------------
-     * Part dedicated to the task that retrieve the current weather
+     * Part dedicated to the task that display random popups
      * ------------------------------------------------------------------------
      * ------------------------------------------------------------------------
      */
     
     
     /**
-     * 
+     * Boolean that indicate whether the popup generator must generate a
+     * new popup or terminate (infinite loop condition boolean)
      */
     private boolean runPopupGenerator;
     
     
     /**
-     * 
+     * Internal AsyncTask that generate random popups related to the current
+     * weather.
      */
     private class LexicalFieldPopupGeneratorTask extends AsyncTask<Void, Void, Void>
     {
@@ -586,8 +609,10 @@ public class ActivityDogeWeather extends Activity
 		@Override
 		protected Void doInBackground(Void... params) 
 		{
+			// infinite loop
 			while(runPopupGenerator)
 			{
+				// send a progress update to request a new popup.
 				publishProgress();
 				
 				// sleep 2.5s
@@ -599,12 +624,13 @@ public class ActivityDogeWeather extends Activity
 		}
     
 		
-		
 		@Override
     	protected void onProgressUpdate(Void... progress) 
     	{
 			synchronized (drawLock)
 			{
+				// create and display a new popup every time a progress
+				// update is sent.
 				makeRandomPopup(dogeWeather);
 			}
 		}
@@ -624,13 +650,13 @@ public class ActivityDogeWeather extends Activity
     
     
     /**
-     * 
+     * The current state of the "use my location" button.
      */
     private ButtonLocationState locationState;
     
     
     /**
-     * 
+     * Enumeration for describing the state of the "use my location" button.
      */
     private enum ButtonLocationState
     {
@@ -643,9 +669,12 @@ public class ActivityDogeWeather extends Activity
     
     
     /**
-     * 
+     * Update the state of the "use my location" button. If the button is in
+     * the DEFAULT state, the only change allowed is WAITING. Any other state
+     * will be ignored in this case.
      * 
      * @param locationState
+     * 		The new state of the "use my location" button.
      */
     private void switchLocationState(ButtonLocationState locationState)
     {
