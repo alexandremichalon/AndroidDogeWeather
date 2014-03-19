@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package fr.amichalon.androidappdogeweather.business;
 
 import fr.amichalon.androidappdogeweather.model.GeoCoordinates;
@@ -8,32 +6,68 @@ import fr.amichalon.androidappdogeweather.model.Weather;
 import fr.amichalon.androidappdogeweather.model.enumerations.WeatherIcon;
 
 /**
+ * Business class transforming the current weather so it is readable by
+ * a doge. Very transforming !
+ * 
  * @author alexandre.michalon
- *
  */
 public class DogeWeather 
 {
 	
+	/**
+	 * Construct a DogeWeather by taking a weather and making it more doge.
+	 * 
+	 * @param weather
+	 * 		The current weather.
+	 */
 	public DogeWeather(Weather weather)
 	{
 		updateCurrentWeather(weather);
 	}
 	
 	
+	/**
+	 * Construct a default DogeWeather, such sad because no weather.
+	 */
 	public DogeWeather()
 	{
 		this(null);
 	}
 	
 
+	
+	
+	
+	/**
+	 * The current weather.
+	 */
 	private Weather weather;
 	
+	
+	/**
+	 * The weather icon associated with the current weather, used to get
+	 * lexical field, background and front image in the app.
+	 */
 	private WeatherIcon weatherIcon;
 	
+	
+	/**
+	 * The full lexical field of the current weather, retrieved from
+	 * the resources.
+	 */
 	private String[] lexicalField;
 	
 	
 	
+	
+	
+	/**
+	 * Get the latitude used to retrieve the current weather, or Paris
+	 * latitude if there is no current weather..
+	 * 
+	 * @return
+	 * 		A double.
+	 */
 	public double getLatitude()
 	{
 		if (weather != null)
@@ -44,7 +78,13 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the longitude used to retrieve the current weather, or Paris
+	 * longitude if there is no current weather.
+	 * 
+	 * @return
+	 * 		A double.
+	 */
 	public double getLongitude()
 	{
 		if (weather != null)
@@ -55,7 +95,13 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the description of the current weather, or "doge weather" if there
+	 * is no current weather.
+	 * 
+	 * @return
+	 * 		A String.
+	 */
 	public String getDescription()
 	{
 		if(weather != null)
@@ -66,7 +112,13 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the name of the city of the current weather, or "wow city" if there
+	 * is no current weather.
+	 * 
+	 * @return
+	 * 		A String.
+	 */
 	public String getCity()
 	{
 		if (weather != null)
@@ -77,7 +129,12 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the current temperature in °C, or 0 if there is no current weather.
+	 * 
+	 * @return
+	 * 		An integer.
+	 */
 	public int getTemperatureCelcius()
 	{
 		if (weather != null)
@@ -88,7 +145,11 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the current temperature in °F, or 0 if there is no current weather.
+	 * 
+	 * @return
+	 */
 	public int getTemperatureFahrenheit()
 	{
 		if (weather != null)
@@ -99,7 +160,13 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the background image ID of the current weather in the resources, 
+	 * or the default background image ID if there is no current weather.
+	 * 
+	 * @return
+	 * 		An integer that represent an ID.
+	 */
 	public int getBackImageId()
 	{
 		if(weatherIcon != null)
@@ -110,7 +177,12 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the front image ID of the current weather in the resources, 
+	 * or the default front image ID if there is no current weather.
+	 * 
+	 * @return
+	 */
 	public int getFrontImageId()
 	{
 		if(weatherIcon != null)
@@ -121,7 +193,14 @@ public class DogeWeather
 	}
 	
 	
-	
+	/**
+	 * Get the full lexical field of the current weather.
+	 * 
+	 * @return
+	 * 		An array of String taken from the resources files.
+	 * 
+	 * @see DogeWeather#lexicalField
+	 */
 	public String[] getLexicalField()
 	{
 		return lexicalField;
@@ -130,6 +209,14 @@ public class DogeWeather
 	
 	
 	
+	
+	/**
+	 * Make a Weather the current weather. Also build the lexical field of
+	 * the new current weather.
+	 * 
+	 * @param weather
+	 * 		The weather that becomes the new current weather.
+	 */
 	public void updateCurrentWeather(Weather weather)
 	{
 		this.weather = weather;

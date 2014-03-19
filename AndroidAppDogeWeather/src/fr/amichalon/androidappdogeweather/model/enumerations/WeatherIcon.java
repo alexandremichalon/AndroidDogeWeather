@@ -4,10 +4,10 @@ package fr.amichalon.androidappdogeweather.model.enumerations;
 import fr.amichalon.androidappdogeweather.R;
 
 /**
- * @author alexandre.michalon
- *
  * Enumeration that associate OpenWeatherMap weather icon IDs
  * with their lexical field in the resources.
+ * 
+ * @author alexandre.michalon
  */
 public enum WeatherIcon 
 {
@@ -36,7 +36,7 @@ public enum WeatherIcon
 	
 	
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 * 
 	 * @param iconId
 	 * 			The OpenWeatherMap Id of the WeatherIcon.
@@ -72,8 +72,16 @@ public enum WeatherIcon
 	 */
 	private int lexicalFieldId;
 	
+	/**
+	 * The ID of the front image associated with a weather
+	 * in the resource files.
+	 */
 	private int frontImageId;
 	
+	/**
+	 * The ID of the background image associated with a weather
+	 * in the resource files.
+	 */
 	private int backImageId;
 	
 	
@@ -84,7 +92,7 @@ public enum WeatherIcon
 	 * 	It is used to reference the icon of a weather.
 	 * </p>
 	 * 
-	 * <p>Ex : "01d" stands for the clear sky weather icon ID</p>
+	 * <p><i>Ex : "01d" stands for the clear sky weather icon ID</i></p>
 	 * 
 	 * @return a String that is the OpenWeatherMap Id of the WeatherIcon
 	 *
@@ -99,9 +107,8 @@ public enum WeatherIcon
 	
 	/**
 	 * <p>
-	 * 	Get the ID of the Android resource associated with
-	 * 	the weather. The resource is a String Array containing the
-	 * 	lexical field associated with a weather.
+	 * 	Get the The ID of the lexical field associated with a weather
+	 * in the resource files.
 	 * </p>
 	 * 
 	 * @return an integer that is the ID of the Android resource
@@ -114,12 +121,32 @@ public enum WeatherIcon
 	}
 	
 	
+	/**
+	 * <p>
+	 * 	Get the ID of the front image associated with a weather
+	 * in the resource files.
+	 * </p>
+	 * 
+	 * @return an integer that is the ID of the Android resource
+	 * 
+	 * @see WeatherIcon#frontImageId
+	 */
 	public int getFrontImageId()
 	{
 		return frontImageId;
 	}
 	
 	
+	/**
+	 * <p>
+	 * 	Get the ID of the background image associated with a weather
+	 * in the resource files.
+	 * </p>
+	 * 
+	 * @return an integer that is the ID of the Android resource
+	 * 
+	 * @see WeatherIcon#backImageId
+	 */
 	public int getBackImageId()
 	{
 		return backImageId;
@@ -156,9 +183,9 @@ public enum WeatherIcon
 	 */
 	public static WeatherIcon getWeatherIcon(String iconId)
 	{
-		for(WeatherIcon icon : WeatherIcon.values())
+		for (WeatherIcon icon : WeatherIcon.values())
 		{
-			if(iconId.equals(icon.getIconId()))
+			if (iconId.equals(icon.getIconId()))
 			{
 				return icon;
 			}

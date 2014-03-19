@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package fr.amichalon.androidappdogeweather;
 
 import android.app.Activity;
@@ -16,20 +14,22 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
+ * The Fragment that display the credits of the Application.
+ * 
  * @author alexandre.michalon
- *
  */
 public class CreditsDialogFragment extends DialogFragment 
 {
 	
-
 	@Override
     public Dialog onCreateDialog(Bundle savedInstanceState) 
 	{
+		// inflate the layout from xml
 		Activity activity		= getActivity();
 		LayoutInflater inflater	= activity.getLayoutInflater();
     	View creditsView		= inflater.inflate(R.layout.doge_credits, null);
     	
+    	// set properties of the textviews so that hyperlinks are clickables
     	makeTextViewLinksClickable(creditsView);
     	
     	creditsView.setBackgroundResource(R.color.credits_bgcolor);
@@ -38,8 +38,8 @@ public class CreditsDialogFragment extends DialogFragment
     	
     	builder.setView(creditsView);
     	builder.setTitle(R.string.credits_title);
-    	builder.setNeutralButton(R.string.dialog_close, new DialogInterface.OnClickListener() {
-			
+    	builder.setNeutralButton(R.string.dialog_close, new DialogInterface.OnClickListener() 
+    	{	
 			@Override
 			public void onClick(DialogInterface dialog, int which)
 			{
@@ -51,7 +51,12 @@ public class CreditsDialogFragment extends DialogFragment
     }
 	
 	
-	
+	/**
+	 * Set properties of the credits textviews so that hyperlinks are clickables
+	 * 
+	 * @param view
+	 * 		The credits layout.
+	 */
 	private void makeTextViewLinksClickable(View view)
 	{
 		MovementMethod linkMovementMethod = LinkMovementMethod.getInstance();

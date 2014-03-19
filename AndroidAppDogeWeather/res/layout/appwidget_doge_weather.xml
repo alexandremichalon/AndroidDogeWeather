@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE RelativeLayout>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LayoutAppWidget"
@@ -12,7 +13,6 @@
         android:layout_height="match_parent"
         android:minHeight="@dimen/appwidget_minheight"
         android:minWidth="@dimen/appwidget_minwidth"
-        android:padding="@dimen/appwidget_padding"
         android:scaleType="fitXY"
         android:src="@drawable/back_01d"
         tools:ignore="ContentDescription" />
@@ -35,49 +35,67 @@
         android:layout_alignBottom="@id/ImgBackgroundAppWidget"
         android:layout_alignLeft="@id/ImgBackgroundAppWidget"
         android:alpha="0.75"
-        android:background="@android:color/background_dark" >
+        android:background="@android:color/background_dark"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/appwidget_padding"
+        android:paddingLeft="@dimen/appwidget_padding"
+        android:paddingRight="@dimen/appwidget_padding" >
 
         <TextView
             android:id="@+id/TextDescriptionAppWidget"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:height="30dp"
-            android:textSize="16sp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:paddingLeft="@dimen/appwidget_padding"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/ImgDogeAppWidget"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/ImgDogeAppWidget"
-        android:textSize="12sp" />
+        tools:ignore="ContentDescription" />
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/ImgDogeAppWidget"
         android:layout_alignTop="@+id/ImgDogeAppWidget"
-        android:textSize="12sp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="@dimen/appwidget_padding"
+        android:layout_marginTop="@dimen/appwidget_padding"
+        tools:ignore="ContentDescription" />
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/LayoutBottomAppWidget"
         android:layout_alignRight="@id/ImgBackgroundAppWidget"
         android:layout_marginBottom="@dimen/appwidget_padding"
-        android:textSize="12sp" />
+        android:layout_marginRight="@dimen/appwidget_padding"
+        tools:ignore="ContentDescription" />
 
-    <TextView
+    <ImageView
         android:id="@+id/TextLFAppWidget4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/ImgBackgroundAppWidget"
         android:layout_below="@+id/TextLFAppWidget2"
         android:layout_marginLeft="@dimen/appwidget_padding"
-        android:textSize="12sp" />
+        android:layout_marginTop="@dimen/appwidget_padding"
+        tools:ignore="ContentDescription" />
+    
+    <ImageView
+        android:id="@+id/TextLFAppWidget5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/TextLFAppWidget1"
+        android:layout_alignRight="@id/ImgDogeAppWidget"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>
